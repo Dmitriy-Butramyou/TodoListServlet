@@ -16,6 +16,7 @@ public class Task {
     private Long eventDate;
     private Long creationDateTime;
     private State state;
+    private Long userId;
 
     public Task(String name, String description, Long eventDate, Long creationDateTime, State state) {
         this.name = name;

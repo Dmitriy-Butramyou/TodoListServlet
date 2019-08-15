@@ -1,6 +1,5 @@
 package dao;
 
-import model.State;
 import model.Task;
 
 import java.util.List;

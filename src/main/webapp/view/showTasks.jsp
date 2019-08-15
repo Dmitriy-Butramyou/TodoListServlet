@@ -12,12 +12,21 @@
     <title>Список заданий</title>
 </head>
 <body>
+
+<form action = "/index">
+    <input type="submit" value="Index page">
+</form>
+<form action = "/addTask">
+    <input type="submit" value="Добавить новое задание">
+</form>
+
 <table border="2">
     <tr>
         <td>ID</td>
         <td>Тема</td>
         <td>Описание</td>
         <td>State</td>
+        <td>User Id</td>
         <td>Действия</td>
     </tr>
     <%
@@ -28,22 +37,18 @@
         out.println("<td>" + task.getName() + "</td>");
         out.println("<td>" + task.getDescription() + "</td>");
         out.println("<td>" + task.getState().toString() + "</td>");
+        out.println("<td>" + task.getUserId() + "</td>");
         out.println("<td>" + "<form action = \"/mark_delete/" + task.getId() + "\">\n" +
                 "    <input type=\"submit\" value=\"Mark Delete\">\n" +
-                "</form>" + "</td>");
+                "</form>" +
+                "<form action = \"/mark_complete/" + task.getId() + "\">\n" +
+                "    <input type=\"submit\" value=\"Mark Complete\">\n" +
+                "</form>" +"</td>");
         out.println("<tr>" + "</tr>");
     }
     } else out.println("<p>There are no users yet!</p>");
     %>
 </table>
 
-<form method=""></form>
-
-<form action = "/index">
-    <input type="submit" value="Index page">
-</form>
-<form action = "/addTask">
-    <input type="submit" value="Добавить новое задание">
-</form>
 </body>
 </html>

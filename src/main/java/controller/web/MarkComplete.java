@@ -12,9 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-
-@WebServlet("/mark_delete/*")
-public class MarkDelete  extends HttpServlet {
+@WebServlet("/mark_complete/*")
+public class MarkComplete extends HttpServlet {
 
     private TaskDao taskDao = new TaskDaoImpl();
 
@@ -25,10 +24,10 @@ public class MarkDelete  extends HttpServlet {
 
         Task task = taskDao.getOne(id);
 
-        Boolean isDeleted = task.getState().equals(State.DELETE);
+        Boolean isComplete = task.getState().equals(State.COMPLETE);
 
-        if(!isDeleted) {
-            task.setState(State.DELETE);
+        if(!isComplete) {
+            task.setState(State.COMPLETE);
             taskDao.save(task);
         } else {
             task.setState(State.ACTUAL);

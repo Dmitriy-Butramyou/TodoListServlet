@@ -5,6 +5,7 @@ import jdbc.connector.MySqlConnector;
 import jdbc.query.MySqlQuery;
 import model.State;
 import model.Task;
+import util.CloseConnection;
 
 import java.sql.*;
 import java.text.DateFormat;
@@ -37,11 +38,12 @@ public class TaskDaoImpl implements TaskDao {
                         .eventDate(resultSet.getLong(4))
                         .creationDateTime(resultSet.getLong(5))
                         .state(State.getState(resultSet.getInt(6)))
+                        .userId(resultSet.getLong(7))
                         .build();
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            close(preparedStatement, resultSet);
+            CloseConnection.close(preparedStatement, resultSet);
         }
         return null;
     }
@@ -85,13 +87,14 @@ public class TaskDaoImpl implements TaskDao {
                                 .eventDate(resultSet.getLong(4))
                                 .creationDateTime(resultSet.getLong(5))
                                 .state(State.getState(resultSet.getInt(6)))
+                                .userId(resultSet.getLong(7))
                                 .build()
                 );
             }
             return taskList;
         } catch (SQLException e) {
             e.printStackTrace();
-            close(preparedStatement, resultSet);
+            CloseConnection.close(preparedStatement, resultSet);
         }
         return new ArrayList<>(0);
     }
@@ -109,22 +112,7 @@ public class TaskDaoImpl implements TaskDao {
         return new ArrayList<>(0);
     }
 
-    private void close(PreparedStatement preparedStatement, ResultSet resultSet) {
-        if (preparedStatement != null) {
-            try {
-                preparedStatement.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        if (resultSet != null) {
-            try {
-                resultSet.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+
 
     private long getTime(long value) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -151,8 +139,10 @@ public class TaskDaoImpl implements TaskDao {
             preparedStatement.setLong(3, task.getEventDate());
             preparedStatement.setLong(4, task.getCreationDateTime());
             preparedStatement.setInt(5, State.getNumber(task.getState()));
+            //немного изменил
+            preparedStatement.setLong(6, task.getUserId());
             if (task.getId() != null) {
-                preparedStatement.setLong(6, task.getId());
+                preparedStatement.setLong(7, task.getId());
                 return preparedStatement.executeUpdate() > 0 ? task : null;
             } else {
                 preparedStatement.executeUpdate();
@@ -167,7 +157,7 @@ public class TaskDaoImpl implements TaskDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            close(preparedStatement, null);
+            CloseConnection.close(preparedStatement, null);
         }
         return null;
     }
@@ -212,13 +202,14 @@ public class TaskDaoImpl implements TaskDao {
                                 .eventDate(resultSet.getLong(4))
                                 .creationDateTime(resultSet.getLong(5))
                                 .state(State.getState(resultSet.getInt(6)))
+                                .userId(resultSet.getLong(7))
                                 .build()
                 );
             }
             return taskList;
         } catch (SQLException e) {
             e.printStackTrace();
-            close(preparedStatement, resultSet);
+            CloseConnection.close(preparedStatement, resultSet);
         }
         return null;
     }
@@ -239,7 +230,7 @@ public class TaskDaoImpl implements TaskDao {
 //            }
         } catch (SQLException e) {
             e.printStackTrace();
-            close(preparedStatement, resultSet);
+            CloseConnection.close(preparedStatement, resultSet);
         }
         return false;
     }

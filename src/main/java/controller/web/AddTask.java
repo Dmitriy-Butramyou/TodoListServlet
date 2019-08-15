@@ -63,7 +63,7 @@ public class AddTask extends HttpServlet {
 
             taskDao.save(task);
 
-            resp.sendRedirect("/");
+            resp.sendRedirect("/allTask");
         }
     }
 }
