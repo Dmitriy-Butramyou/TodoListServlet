@@ -16,11 +16,9 @@
     <div>
         <h2>Create user please :)</h2>
     </div>
-
-<%
-String error =(String) request.getAttribute("error");
-out.println("<div>" + error + "</div>");
-%>
+<div>
+    ${error}
+</div>
 
     <form method="post">
         <div>

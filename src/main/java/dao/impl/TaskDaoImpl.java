@@ -5,6 +5,7 @@ import jdbc.connector.MySqlConnector;
 import jdbc.query.MySqlQuery;
 import model.State;
 import model.Task;
+import model.User;
 import util.CloseConnection;
 
 import java.sql.*;
@@ -57,6 +58,41 @@ public class TaskDaoImpl implements TaskDao {
         List<Task> taskList = getTasks(query, preparedStatement, resultSet);
         if (taskList != null) return taskList;
         return new ArrayList<>(0);
+    }
+
+    @Override
+    public List<Task> findAllByUser(User user) {
+        String query = MySqlQuery.getInstance().getQuery("taskGetAllByUser");
+
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setLong(1, user.getId());
+            resultSet = preparedStatement.executeQuery();
+            List<Task> taskList = new ArrayList<>();
+            while (resultSet.next()) {
+                taskList.add(
+                        Task
+                                .builder()
+                                .id(resultSet.getLong(1))
+                                .name(resultSet.getString(2))
+                                .description(resultSet.getString(3))
+                                .eventDate(resultSet.getLong(4))
+                                .creationDateTime(resultSet.getLong(5))
+                                .state(State.getState(resultSet.getInt(6)))
+                                .userId(resultSet.getLong(7))
+                                .build()
+                );
+            }
+            return taskList;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            CloseConnection.close(preparedStatement, resultSet);
+        }
+        return new ArrayList<>(0);
+
     }
 
     @Override

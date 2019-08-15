@@ -27,7 +27,7 @@
                 <td><input type="text" name="password"></td>
             </table>
         </div>
-        <button style="margin-top: 10px" type="submit">Post</button>
+        <button style="margin-top: 10px" type="submit">Login</button>
     </form>
 
 </div>

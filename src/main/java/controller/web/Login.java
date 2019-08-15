@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -27,6 +28,9 @@ public class Login extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<User> userList = userDao.getAll();
 
+        HttpSession session = req.getSession();
+        User sessionUser;
+
         Boolean login = false;
         req.setCharacterEncoding("UTF-8");
         String userName = req.getParameter("userName");
@@ -40,6 +44,8 @@ public class Login extends HttpServlet {
             for (User user : userList) {
                 if (user.getName().equals(userName)) {
                     if (user.getPassword().equals(password)) {
+                        sessionUser = user;
+                        session.setAttribute("user", sessionUser);
                         login = true;
                     }
                 }

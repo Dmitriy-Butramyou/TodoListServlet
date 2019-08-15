@@ -27,15 +27,15 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Tasks</a>
+                    <a class="nav-link" href="/allTask">Tasks</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#">New Task</a>
+                    <a class="nav-link" href="/addTask">New Task</a>
                 </li>
 
             <a href="#">
-                <button class="btn btn-outline-success my-2 my-sm-0 ml-3" type="submit">
+                <button class="btn btn-outline-success my-2 my-sm-0 ml-3" type="button">
                     Performed
                 </button>
             </a>
@@ -64,7 +64,17 @@
     <a class="dropdown-item" href="#">Something else here</a>
 </div>
 </div>
-
+            <<a href="/login">
+                <button class="btn btn-outline-light my-2 my-sm-0 ml-3" type="button">
+                    <%
+                        if (request.getAttribute("name") != null) {
+                            out.println("Sign Out");
+                        } else {
+                            out.println("Sign In");
+                        }
+                    %>
+                    </button>
+            </a>
 </div>
 </nav>
 </div>
