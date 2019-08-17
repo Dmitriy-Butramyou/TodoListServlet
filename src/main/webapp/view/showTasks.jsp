@@ -46,7 +46,7 @@
                 "</form>" +"</td>");
         out.println("<tr>" + "</tr>");
     }
-    } else out.println("<p>There are no users yet!</p>");
+    } else out.println("<p>No urgent tasks. Have a rest))</p>");
     %>
 </table>
 

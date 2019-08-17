@@ -1,4 +1,4 @@
-package controller.web;
+package controller.web.logging;
 
 import dao.UserDao;
 import dao.impl.UserDaoImpl;
@@ -9,54 +9,57 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/")
-public class Login extends HttpServlet {
+@WebServlet("/addUser")
+public class CreateUser  extends HttpServlet {
 
     private UserDao userDao = new UserDaoImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("view/login.jsp")
+        req.setAttribute("error", "");
+        req.getRequestDispatcher("view/addUser.jsp")
                 .forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<User> userList = userDao.getAll();
-
-        HttpSession session = req.getSession();
-        User sessionUser;
-
-        Boolean login = false;
         req.setCharacterEncoding("UTF-8");
+        resp.setCharacterEncoding("UTF-8");
+        req.setAttribute("error", "Wrong data");
+
+        List<User> userList = userDao.getAll();
+        User newUser = new User();
+        Boolean uniqueName = true;
+        Boolean addUser = false;
+
         String userName = req.getParameter("userName");
         String password = req.getParameter("password");
 
-        resp.setCharacterEncoding("UTF-8");
-
         if(userName != null && !userName.trim().isEmpty() && password != null && !password.trim().isEmpty()) {
-
-
             for (User user : userList) {
-                if (user.getName().equals(userName)) {
-                    if (user.getPassword().equals(password)) {
-                        sessionUser = user;
-                        session.setAttribute("user", sessionUser);
-                        login = true;
-                    }
+                if(user.getName().equals(userName)) {
+                    uniqueName = false;
+                    req.setAttribute("error", "A user with the same name exists.");
+
                 }
+            }
+            if(uniqueName) {
+                newUser.setName(userName);
+                newUser.setPassword(password);
+                userDao.save(newUser);
+                addUser = true;
             }
 
         }
-        if(login) {
-            String path = req.getContextPath() + "/allTask";
+
+        if(addUser) {
+            String path = req.getContextPath() + "/";
             resp.sendRedirect(path);
         } else {
-            req.getRequestDispatcher("view/login.jsp")
+            req.getRequestDispatcher("view/addUser.jsp")
                     .forward(req, resp);
         }
     }

@@ -34,14 +34,14 @@
                     <a class="nav-link" href="/addTask">New Task</a>
                 </li>
 
-            <a href="#">
+            <a href="/performed">
                 <button class="btn btn-outline-success my-2 my-sm-0 ml-3" type="button">
                     Performed
                 </button>
             </a>
             </form>
 
-        <a href="#">
+        <a href="/basket">
             <button class="btn btn-outline-danger my-2 my-sm-0 ml-3" type="button">
                 Basket
             </button>

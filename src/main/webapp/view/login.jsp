@@ -16,6 +16,8 @@
         <h2>Login please :)</h2>
     </div>
 
+    <div>${error}</div>
+
     <form method="post">
         <div>
             <table border="2">

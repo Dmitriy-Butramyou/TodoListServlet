@@ -29,9 +29,10 @@ public class IndexServlet extends HttpServlet {
         @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             HttpSession session = req.getSession();
-            User sessionUser = (User) session.getAttribute("user");
 
-                req.setAttribute("name", sessionUser.getName());
+            User userSession = (User) session.getAttribute("user");
+
+                req.setAttribute("name", userSession.getName());
             req.getRequestDispatcher("view/index.jsp")
                 .forward(req, resp);
     }

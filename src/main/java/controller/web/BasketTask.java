@@ -15,26 +15,25 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet("/allTask")
-public class TaskShowServlet extends HttpServlet {
+@WebServlet("/basket")
+public class BasketTask extends HttpServlet {
 
     private TaskDao taskDao = new TaskDaoImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
-        User sessionUser = (User) session.getAttribute("user");
+        User userSession = (User) session.getAttribute("user");
 
         List<Task> tasks = new ArrayList<>();
 
-        if(sessionUser != null) {
-            tasks = taskDao.findAllByUser(sessionUser.getId());
+        if(userSession != null) {
+            tasks = taskDao.findAllByBasket(userSession.getId());
         }
 
         req.setAttribute("tasks", tasks);
-        req.getRequestDispatcher("view/showTasks.jsp")
+        req.getRequestDispatcher("view/basket.jsp")
                 .forward(req, resp);
     }
-
 
 }

@@ -1,4 +1,4 @@
-package controller.web;
+package controller.web.markOnTask;
 
 import dao.TaskDao;
 import dao.impl.TaskDaoImpl;
@@ -28,11 +28,9 @@ public class MarkDelete  extends HttpServlet {
         Boolean isDeleted = task.getState().equals(State.DELETE);
 
         if(!isDeleted) {
-            task.setState(State.DELETE);
-            taskDao.save(task);
+            taskDao.markAsDeleted(task);
         } else {
-            task.setState(State.ACTUAL);
-            taskDao.save(task);
+            taskDao.markAsActual(task);
         }
 
         String path = req.getContextPath() + "/allTask";

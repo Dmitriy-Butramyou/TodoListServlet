@@ -5,7 +5,6 @@ import jdbc.connector.MySqlConnector;
 import jdbc.query.MySqlQuery;
 import model.State;
 import model.Task;
-import model.User;
 import util.CloseConnection;
 
 import java.sql.*;
@@ -48,28 +47,35 @@ public class TaskDaoImpl implements TaskDao {
         }
         return null;
     }
+//
+//    @Override
+//    public List<Task> findAll() {
+//        String query = MySqlQuery.getInstance().getQuery("taskGetAll");
+//
+//        PreparedStatement preparedStatement = null;
+//        ResultSet resultSet = null;
+//        List<Task> taskList = getTasks(query, preparedStatement, resultSet);
+//        if (taskList != null) return taskList;
+//        return new ArrayList<>(0);
+//    }
 
     @Override
-    public List<Task> findAll() {
-        String query = MySqlQuery.getInstance().getQuery("taskGetAll");
-
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        List<Task> taskList = getTasks(query, preparedStatement, resultSet);
-        if (taskList != null) return taskList;
-        return new ArrayList<>(0);
-    }
-
-    @Override
-    public List<Task> findAllByUser(User user) {
+    public List<Task> findAllByUser(Long userId) {
         String query = MySqlQuery.getInstance().getQuery("taskGetAllByUser");
 
+        List<Task> taskList = findAllBy(userId, query);
+        if (taskList != null) return taskList;
+        return new ArrayList<>(0);
+
+    }
+
+    private List<Task> findAllBy(Long userId, String query) {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
         try {
             preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setLong(1, user.getId());
+            preparedStatement.setLong(1, userId);
             resultSet = preparedStatement.executeQuery();
             List<Task> taskList = new ArrayList<>();
             while (resultSet.next()) {
@@ -91,8 +97,7 @@ public class TaskDaoImpl implements TaskDao {
             e.printStackTrace();
             CloseConnection.close(preparedStatement, resultSet);
         }
-        return new ArrayList<>(0);
-
+        return null;
     }
 
     @Override
@@ -136,18 +141,27 @@ public class TaskDaoImpl implements TaskDao {
     }
 
     /**
-     * get all with deleted = 1
+     * get all where state = 3
      */
     @Override
-    public List<Task> findAllFromBasket() {
-        String query = MySqlQuery.getInstance().getQuery("taskFindAllBasket");
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        List<Task> taskList = getTasks(query, preparedStatement, resultSet);
+    public List<Task> findAllByBasket(Long userId) {
+        String query = MySqlQuery.getInstance().getQuery("taskFindAllByBasket");
+        List<Task> taskList = findAllBy(userId, query);
         if (taskList != null) return taskList;
         return new ArrayList<>(0);
     }
 
+    /**
+     * get all where state = 2
+     */
+    @Override
+    public List<Task> findAllByPerformed(Long userId) {
+        String query = MySqlQuery.getInstance().getQuery("taskFindAllByPerformed");
+
+        List<Task> taskList = findAllBy(userId, query);
+        if (taskList != null) return taskList;
+        return new ArrayList<>(0);
+    }
 
 
     private long getTime(long value) {
@@ -199,27 +213,24 @@ public class TaskDaoImpl implements TaskDao {
     }
 
     @Override
-    public Task markAsDeleted(Long taskId) {
-        Task task = getOne(taskId);
+    public void markAsDeleted(Task task) {
         task.setState(State.DELETE);
-        return save(task);
+        save(task);
     }
 
     @Override
-    public Task markAsComplete(Long taskId) {
-        Task task = getOne(taskId);
+    public void markAsComplete(Task task) {
         task.setState(State.COMPLETE);
-        return save(task);
+        save(task);
     }
 
     @Override
-    public Task markAsActual(Long taskId) {
-        Task task = getOne(taskId);
+    public void markAsActual(Task task) {
         // Установка сегодняшней даты
         Boolean isDeleted = task.getState().equals(State.DELETE);
-        task.setEventDate(isDeleted ? task.getEventDate() : getTime(0));
+        task.setEventDate(isDeleted ? getTime(0) : task.getEventDate());
         task.setState(State.ACTUAL);
-        return save(task);
+        save(task);
     }
 
 
@@ -250,6 +261,7 @@ public class TaskDaoImpl implements TaskDao {
         return null;
     }
 
+
     @Override
     public Boolean remove(Long taskId) {
         String query = MySqlQuery.getInstance().getQuery("taskDelete");
@@ -258,6 +270,7 @@ public class TaskDaoImpl implements TaskDao {
         try {
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setLong(1, taskId);
+            preparedStatement.executeUpdate();
             return true;
 //            if(preparedStatement.executeUpdate() > 0) {
 //                //записать в лог
@@ -269,5 +282,25 @@ public class TaskDaoImpl implements TaskDao {
             CloseConnection.close(preparedStatement, resultSet);
         }
         return false;
+    }
+
+    @Override
+    public void removeAll(Long userId) {
+        String query = MySqlQuery.getInstance().getQuery("taskAllDelete");
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setLong(1, userId);
+            preparedStatement.executeUpdate();
+//            if(preparedStatement.executeUpdate() > 0) {
+//                //записать в лог
+//            } else {
+//                // записать в лог
+//            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            CloseConnection.close(preparedStatement, resultSet);
+        }
     }
 }

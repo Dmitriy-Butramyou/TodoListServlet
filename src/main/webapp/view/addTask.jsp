@@ -20,6 +20,7 @@
             <td><input type="text" name="nameTask"></td>
             <td><input type="text" name="description"></td>
             <td><input type="date" name="eventDate"></td>
+            <input type="hidden" name="userId" value="${user}">
         </table>
     </div>
     <button style="margin-top: 10px" type="submit">Post</button>
@@ -27,7 +28,7 @@
 
 </div>
 <div>
-    <button onclick="location.href='/'">Return to the task show</button>
+    <button onclick="location.href='/allTask'">Return to the task show</button>
 </div>
 </body>
 </html>

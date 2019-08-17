@@ -1,4 +1,4 @@
-package controller.web;
+package controller.web.markOnTask;
 
 import dao.TaskDao;
 import dao.impl.TaskDaoImpl;
@@ -27,11 +27,9 @@ public class MarkComplete extends HttpServlet {
         Boolean isComplete = task.getState().equals(State.COMPLETE);
 
         if(!isComplete) {
-            task.setState(State.COMPLETE);
-            taskDao.save(task);
+            taskDao.markAsComplete(task);
         } else {
-            task.setState(State.ACTUAL);
-            taskDao.save(task);
+            taskDao.markAsActual(task);
         }
 
         String path = req.getContextPath() + "/allTask";
