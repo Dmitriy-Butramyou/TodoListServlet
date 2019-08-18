@@ -4,12 +4,14 @@
     <title>Add Task</title>
 </head>
 <body>
+
+
 <div>
     <div>
         <h2>Add Task :)</h2>
     </div>
 
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     <div>
         <table border="2">
             <tr>
@@ -22,6 +24,7 @@
             <td><input type="date" name="eventDate"></td>
             <input type="hidden" name="userId" value="${user}">
         </table>
+        <input type="file" name="attachment">
     </div>
     <button style="margin-top: 10px" type="submit">Post</button>
 </form>

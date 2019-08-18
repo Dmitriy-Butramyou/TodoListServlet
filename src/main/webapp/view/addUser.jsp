@@ -11,10 +11,10 @@
     <title>Add User</title>
 </head>
 <body>
-
+<div style="width: 980px; margin: auto">
 <div>
     <div>
-        <h2>Create user please :)</h2>
+        <h2 align="center">Create user please :)</h2>
     </div>
 <div>
     ${error}
@@ -22,7 +22,7 @@
 
     <form method="post">
         <div>
-            <table border="2">
+            <table border="2" style= "margin: auto">
                 <tr>
                     <td>Name</td>
                     <td>Password</td>
@@ -31,13 +31,15 @@
                 <td><input type="text" name="password"></td>
             </table>
         </div>
-        <button style="margin-top: 10px" type="submit">Create</button>
+        <div align="center">
+        <button style="margin: auto" type="submit">Create</button>
+        </div>
     </form>
 
 </div>
-<div>
-    <button onclick="location.href='/'">Login</button>
+        <div align="center">
+                <button style="margin: auto" onclick="location.href='/'">Login</button>
+        </div>
 </div>
-
 </body>
 </html>

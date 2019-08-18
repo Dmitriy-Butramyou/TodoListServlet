@@ -14,7 +14,7 @@
 <body>
 <h4>That performed tasks. You COOL!!! :)</h4>
 
-<form action = "/index">
+<form action = "/allTask">
     <input type="submit" value="Index page">
 </form>
 

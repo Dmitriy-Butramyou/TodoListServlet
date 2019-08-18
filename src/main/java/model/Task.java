@@ -25,4 +25,13 @@ public class Task {
         this.creationDateTime = creationDateTime;
         this.state = state;
     }
+
+    public Task(String name, String description, Long eventDate, Long creationDateTime, State state, Long userId) {
+        this.name = name;
+        this.description = description;
+        this.eventDate = eventDate;
+        this.creationDateTime = creationDateTime;
+        this.state = state;
+        this.userId = userId;
+    }
 }

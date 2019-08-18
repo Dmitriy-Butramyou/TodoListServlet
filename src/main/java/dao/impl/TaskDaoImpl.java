@@ -1,5 +1,6 @@
 package dao.impl;
 
+import dao.AttachmentDao;
 import dao.TaskDao;
 import jdbc.connector.MySqlConnector;
 import jdbc.query.MySqlQuery;
@@ -18,6 +19,7 @@ import java.util.List;
 public class TaskDaoImpl implements TaskDao {
 
     private Connection connection = MySqlConnector.getInstance().getConnection();
+    private AttachmentDao attachmentDao = new AttachmentDaoImpl();
 
 
     @Override
@@ -47,17 +49,7 @@ public class TaskDaoImpl implements TaskDao {
         }
         return null;
     }
-//
-//    @Override
-//    public List<Task> findAll() {
-//        String query = MySqlQuery.getInstance().getQuery("taskGetAll");
-//
-//        PreparedStatement preparedStatement = null;
-//        ResultSet resultSet = null;
-//        List<Task> taskList = getTasks(query, preparedStatement, resultSet);
-//        if (taskList != null) return taskList;
-//        return new ArrayList<>(0);
-//    }
+
 
     @Override
     public List<Task> findAllByUser(Long userId) {
@@ -69,13 +61,13 @@ public class TaskDaoImpl implements TaskDao {
 
     }
 
-    private List<Task> findAllBy(Long userId, String query) {
+    private List<Task> findAllBy(Long userIdOrTime, String query) {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
         try {
             preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setLong(1, userId);
+            preparedStatement.setLong(1, userIdOrTime);
             resultSet = preparedStatement.executeQuery();
             List<Task> taskList = new ArrayList<>();
             while (resultSet.next()) {
@@ -111,32 +103,9 @@ public class TaskDaoImpl implements TaskDao {
             return new ArrayList<>(0);
         }
         long dateLong = day.equalsIgnoreCase("today") ? getTime(0) : getTime(86400000);
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        try {
-            preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setLong(1, dateLong);
-            resultSet = preparedStatement.executeQuery();
-            List<Task> taskList = new ArrayList<>();
-            while (resultSet.next()) {
-                taskList.add(
-                        Task
-                                .builder()
-                                .id(resultSet.getLong(1))
-                                .name(resultSet.getString(2))
-                                .description(resultSet.getString(3))
-                                .eventDate(resultSet.getLong(4))
-                                .creationDateTime(resultSet.getLong(5))
-                                .state(State.getState(resultSet.getInt(6)))
-                                .userId(resultSet.getLong(7))
-                                .build()
-                );
-            }
-            return taskList;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            CloseConnection.close(preparedStatement, resultSet);
-        }
+
+        List<Task> taskList = findAllBy(dateLong, query);
+        if (taskList != null) return taskList;
         return new ArrayList<>(0);
     }
 
@@ -231,34 +200,6 @@ public class TaskDaoImpl implements TaskDao {
         task.setEventDate(isDeleted ? getTime(0) : task.getEventDate());
         task.setState(State.ACTUAL);
         save(task);
-    }
-
-
-    private List<Task> getTasks(String query, PreparedStatement preparedStatement, ResultSet resultSet) {
-        try {
-            preparedStatement = connection.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();
-            List<Task> taskList = new ArrayList<>();
-            while (resultSet.next()) {
-                taskList.add(
-                        Task
-                                .builder()
-                                .id(resultSet.getLong(1))
-                                .name(resultSet.getString(2))
-                                .description(resultSet.getString(3))
-                                .eventDate(resultSet.getLong(4))
-                                .creationDateTime(resultSet.getLong(5))
-                                .state(State.getState(resultSet.getInt(6)))
-                                .userId(resultSet.getLong(7))
-                                .build()
-                );
-            }
-            return taskList;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            CloseConnection.close(preparedStatement, resultSet);
-        }
-        return null;
     }
 
 

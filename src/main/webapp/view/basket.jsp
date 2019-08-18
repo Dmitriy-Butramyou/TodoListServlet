@@ -14,7 +14,7 @@
 <body>
 <h4>That deleted tasks.</h4>
 
-<form action = "/index">
+<form action = "/allTask">
     <input type="submit" value="Index page">
 </form>
 

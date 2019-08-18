@@ -11,16 +11,17 @@
     <title>Login</title>
 </head>
 <body>
-<div>
+<div style="width: 980px; margin: auto">
+
     <div>
-        <h2>Login please :)</h2>
+        <h2 align="center">Login please :)</h2>
     </div>
 
     <div>${error}</div>
 
     <form method="post">
         <div>
-            <table border="2">
+            <table border="2" style= "margin: auto">
                 <tr>
                     <td>Name</td>
                     <td>Password</td>
@@ -29,12 +30,15 @@
                 <td><input type="text" name="password"></td>
             </table>
         </div>
-        <button style="margin-top: 10px" type="submit">Login</button>
+        <div align="center">
+        <button style="margin: auto" type="submit">Login</button>
+        </div>
     </form>
+    <div align="center">
+        <button style="margin: auto" onclick="location.href='/addUser'">Add user</button>
+    </div>
+</div>
+</div>
 
-</div>
-<div>
-    <button onclick="location.href='/addUser'">Add user</button>
-</div>
 </body>
 </html>

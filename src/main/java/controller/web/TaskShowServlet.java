@@ -23,14 +23,15 @@ public class TaskShowServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
-        User sessionUser = (User) session.getAttribute("user");
+        User userSession = (User) session.getAttribute("user");
 
         List<Task> tasks = new ArrayList<>();
 
-        if(sessionUser != null) {
-            tasks = taskDao.findAllByUser(sessionUser.getId());
+        if(userSession != null) {
+            tasks = taskDao.findAllByUser(userSession.getId());
         }
 
+        req.setAttribute("name", userSession.getName());
         req.setAttribute("tasks", tasks);
         req.getRequestDispatcher("view/showTasks.jsp")
                 .forward(req, resp);
