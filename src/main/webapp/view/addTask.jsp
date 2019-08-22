@@ -1,9 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Add Task</title>
-</head>
-<body>
+<jsp:include page="parts/navbar.jsp"></jsp:include>
 
 
 <div>
@@ -33,5 +29,4 @@
 <div>
     <button onclick="location.href='/allTask'">Return to the task show</button>
 </div>
-</body>
-</html>
+<jsp:include page="parts/footer.jsp"></jsp:include>

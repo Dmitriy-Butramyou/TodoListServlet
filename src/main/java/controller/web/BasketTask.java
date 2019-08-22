@@ -24,13 +24,14 @@ public class BasketTask extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         User userSession = (User) session.getAttribute("user");
+        req.setAttribute("name", "Please login");
 
         List<Task> tasks = new ArrayList<>();
 
         if(userSession != null) {
             tasks = taskDao.findAllByBasket(userSession.getId());
+            req.setAttribute("name", userSession.getName());
         }
-
         req.setAttribute("tasks", tasks);
         req.getRequestDispatcher("view/basket.jsp")
                 .forward(req, resp);

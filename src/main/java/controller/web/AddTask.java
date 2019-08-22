@@ -33,8 +33,12 @@ public class AddTask extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
-        User sessionUser = (User) session.getAttribute("user");
-        req.setAttribute("user", sessionUser.getId());
+        User userSession = (User) session.getAttribute("user");
+        req.setAttribute("name", "Please login");
+        if(userSession != null) {
+            req.setAttribute("name", userSession.getName());
+            req.setAttribute("user", userSession.getId());
+        }
         req.getRequestDispatcher("view/addTask.jsp")
                 .forward(req, resp);
     }

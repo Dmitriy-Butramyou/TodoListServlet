@@ -7,16 +7,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Basket</title>
-</head>
-<body>
+<jsp:include page="parts/navbar.jsp"></jsp:include>
 <h4>That deleted tasks.</h4>
-
-<form action = "/allTask">
-    <input type="submit" value="Index page">
-</form>
 
 <form action = "/deleteAll">
     <input type="submit" value="Delete all from Basket">
@@ -54,5 +46,4 @@
         } else out.println("<p>No deleted tasks.</p>");
     %>
 </table>
-</body>
-</html>
+<jsp:include page="parts/footer.jsp"></jsp:include>

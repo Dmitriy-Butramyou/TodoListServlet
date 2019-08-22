@@ -7,16 +7,9 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Performed tasks</title>
-</head>
-<body>
-<h4>That performed tasks. You COOL!!! :)</h4>
+<jsp:include page="parts/navbar.jsp"></jsp:include>
 
-<form action = "/allTask">
-    <input type="submit" value="Index page">
-</form>
+<h4>That performed tasks. You COOL!!! :)</h4>
 
 <table border="2">
     <tr>
@@ -48,5 +41,4 @@
     %>
 </table>
 
-</body>
-</html>
+<jsp:include page="parts/footer.jsp"></jsp:include>

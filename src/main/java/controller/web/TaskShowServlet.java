@@ -27,14 +27,20 @@ public class TaskShowServlet extends HttpServlet {
 
         List<Task> tasks = new ArrayList<>();
 
+
         if(userSession != null) {
             tasks = taskDao.findAllByUser(userSession.getId());
+            req.setAttribute("name", userSession.getName());
+            req.setAttribute("tasks", tasks);
+            req.getRequestDispatcher("view/showTasks.jsp")
+                    .forward(req, resp);
+            //защита от дурака
+        } else {
+            String path = req.getContextPath() + "/login";
+            resp.sendRedirect(path);
         }
 
-        req.setAttribute("name", userSession.getName());
-        req.setAttribute("tasks", tasks);
-        req.getRequestDispatcher("view/showTasks.jsp")
-                .forward(req, resp);
+
     }
 
 

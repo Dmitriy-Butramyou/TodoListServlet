@@ -17,7 +17,9 @@
         <h2 align="center">Login please :)</h2>
     </div>
 
-    <div>${error}</div>
+    <div>
+        <h4 align="center" style="color: red">${error}</h4>
+    </div>
 
     <form method="post">
         <div>
