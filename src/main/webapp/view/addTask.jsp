@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:include page="parts/navbar.jsp"></jsp:include>
+<div class="list-group col-md-5 mx-auto mt-4">
 
 
 <div>
@@ -26,7 +27,5 @@
 </form>
 
 </div>
-<div>
-    <button onclick="location.href='/allTask'">Return to the task show</button>
 </div>
 <jsp:include page="parts/footer.jsp"></jsp:include>

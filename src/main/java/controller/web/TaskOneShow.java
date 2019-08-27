@@ -15,10 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.List;
 
-@WebServlet("/allTask")
-public class TaskShowServlet extends HttpServlet {
+@WebServlet("/task/*")
+public class TaskOneShow extends HttpServlet {
 
     private TaskDao taskDao = new TaskDaoImpl();
     private AttachmentDao attachmentDao = new AttachmentDaoImpl();
@@ -28,23 +27,21 @@ public class TaskShowServlet extends HttpServlet {
         HttpSession session = req.getSession();
         User userSession = (User) session.getAttribute("user");
 
-
         if (userSession != null) {
-            List<Attachment> attachments = attachmentDao.getAll();
-            List<Task> tasks = taskDao.findAllByUser(userSession.getId());
+            String[] pathInfo = req.getPathInfo().split("/");
+            Long taskId = Long.valueOf(pathInfo[1]);
 
-            req.setAttribute("attachments", attachments);
-            req.setAttribute("name", userSession.getName());
-            req.setAttribute("tasks", tasks);
-            req.getRequestDispatcher("view/showTasks.jsp")
+            Task task = taskDao.getOne(taskId);
+            Attachment attachment = attachmentDao.getOne(taskId);
+
+            req.setAttribute("task", task);
+            req.setAttribute("attachment", attachment);
+            req.getRequestDispatcher("view/taskOne.jsp")
                     .forward(req, resp);
-            //защита от дурака
         } else {
             String path = req.getContextPath() + "/login";
             resp.sendRedirect(path);
         }
-
-
     }
 
 

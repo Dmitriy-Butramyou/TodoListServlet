@@ -74,15 +74,7 @@
                 </div>
             </div>
             <<a href="/sign_out">
-            <button class="btn btn-outline-light my-2 my-sm-0 ml-3" type="button">
-                <%
-                    if (request.getAttribute("name") == "Please login") {
-                        out.println("Sign In");
-                    } else {
-                        out.println("Sign Out");
-                    }
-                %>
-            </button>
+            <button class="btn btn-outline-light my-2 my-sm-0 ml-3" type="button">Sign Out</button>
         </a>
         </div>
     </nav>

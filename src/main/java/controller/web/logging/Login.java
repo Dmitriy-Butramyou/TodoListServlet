@@ -20,7 +20,6 @@ public class Login extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("error", "");
         req.getRequestDispatcher("view/login.jsp")
                 .forward(req, resp);
     }
@@ -58,7 +57,7 @@ public class Login extends HttpServlet {
             String path = req.getContextPath() + "/allTask";
             resp.sendRedirect(path);
         } else {
-            req.setAttribute("error", "Wrong data");
+            req.setAttribute("error", "Wrong login or password");
             req.getRequestDispatcher("view/login.jsp")
                     .forward(req, resp);
         }

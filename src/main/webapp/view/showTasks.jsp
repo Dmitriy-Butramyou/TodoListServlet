@@ -1,5 +1,6 @@
 <%@ page import="model.Task" %>
 <%@ page import="java.util.List" %>
+<%@ page import="model.Attachment" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -34,62 +35,42 @@
     </div>
 </div>
 
+<span id="result"></span>
+    <c:forEach var="task" items="${tasks}">
+        <form id="mainForm" name="mainForm">
+        <div class="card col-md-5 mx-auto">
+            <div class="card-header">
+                <div class="btn-group" role="group" aria-label="Basic example">
+                  <h4>${task.name}</h4>
+                        <a href="/mark_complete/${task.id}">
+                            <button type="button" class="badge badge-pill badge-success">Complete</button>
+                        </a>
+                        <a href="/mark_delete/${task.id}">
+                            <button type="button" class="badge badge-pill badge-danger">Delete</button>
+                        </a>
+                        <a href="/delete_task/${task.id}">
+                            <button type="button" class="badge badge-pill badge-info">Delete file</button>
+                        </a>
+                        <a href="#">
+                            <button type="button" class="badge badge-pill badge-light">Add file</button>
+                        </a>
+                </div>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Deadline: </h5>
+                <p class="card-text">${task.description}</p>
+                <%--<%--%>
+                    <%--List<Attachment> attachments = (List<Attachment>) request.getAttribute("attachments");--%>
+                    <%--if (attachments != null && !attachments.isEmpty()) {--%>
+                        <%----%>
+                    <%--};--%>
+                <%--%>--%>
 
-<%--<div class="d-flex bd-highlight mb-3">--%>
-<%--<div style="width: 980px; margin: auto">--%>
-<%--<table border="2" style="margin: auto">--%>
-    <%--<tr>--%>
-        <%--<td>ID</td>--%>
-        <%--<td>Тема</td>--%>
-        <%--<td>Описание</td>--%>
-        <%--<td>State</td>--%>
-        <%--<td>User Id</td>--%>
-        <%--<td>Действия</td>--%>
-    <%--</tr>--%>
-    <%--<%--%>
-<%--//        List<Task> tasks = (List<Task>) request.getAttribute("tasks");--%>
-        <%--if (tasks != null && !tasks.isEmpty()) {--%>
-            <%--for (Task task : tasks) {--%>
-                <%--out.println("<td>" + task.getId() + "</td>");--%>
-                <%--out.println("<td>" + task.getName() + "</td>");--%>
-                <%--out.println("<td>" + task.getDescription() + "</td>");--%>
-                <%--out.println("<td>" + task.getState().toString() + "</td>");--%>
-                <%--out.println("<td>" + task.getUserId() + "</td>");--%>
-                <%--out.println("<td>" + "<form action = \"/mark_delete/" + task.getId() + "\">\n" +--%>
-                        <%--"    <input type=\"submit\" value=\"Mark Delete\">\n" +--%>
-                        <%--"</form>" +--%>
-                        <%--"<form action = \"/mark_complete/" + task.getId() + "\">\n" +--%>
-                        <%--"    <input type=\"submit\" value=\"Mark Complete\">\n" +--%>
-                        <%--"</form>" +"</td>");--%>
-                <%--out.println("<tr>" + "</tr>");--%>
-            <%--}--%>
-        <%--} else out.println("<p>No urgent tasks. Have a rest))</p>");--%>
-    <%--%>--%>
-<%--</table>--%>
-<%--</div>--%>
 
-<div class="list-group col-md-5 mx-auto">
-<c:forEach var="task" items="${tasks}">
-    <a href="/task/${task.id}" class="list-group-item list-group-item-action mb-2 ">
-
-        <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">${task.name}
-                <%--<span class="badge badge-success"><#if task.tag>New<#else></#if></span></h5>--%>
-            <%--<small>${task.deadline?date}</small>--%>
+                <%--<a href="#" class="btn btn-primary">Go somewhere</a>--%>
+            </div>
         </div>
-        <p class="mb-1">${task.description} </p>
-        <small>${task.userId} </small>
-    </a>
-    <div class="d-flex bd-highlight mb-3">
-        <a href="/mark_complete/${task.id}">
-            <button type="button" class="btn btn-outline-success mb-3">Performed</button>
-        </a>
-        <a href="/mark_delete/${task.id}" class="ml-auto">
-            <button type="button" class="btn btn-outline-danger mb-3">Delete</button>
-        </a>
-    </div>
+        </form>
     </c:forEach>
-
-</div>
 
 <jsp:include page="parts/footer.jsp"></jsp:include>

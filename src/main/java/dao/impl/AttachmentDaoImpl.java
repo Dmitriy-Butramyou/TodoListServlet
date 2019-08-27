@@ -7,10 +7,41 @@ import model.Attachment;
 import util.CloseConnection;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AttachmentDaoImpl implements AttachmentDao {
 
     private Connection connection = MySqlConnector.getInstance().getConnection();
+
+    @Override
+    public List<Attachment> getAll() {
+        String query = MySqlQuery.getInstance().getQuery("attachmentGetAll");
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        List<Attachment> attachments = new ArrayList<>();
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                attachments.add(
+                        Attachment
+                                .builder()
+                                .id(resultSet.getLong(1))
+                                .originalName(resultSet.getString(2))
+                                .generatedName(resultSet.getString(3))
+                                .generatedPath(resultSet.getString(4))
+                                .taskId(resultSet.getLong(5))
+                                .build()
+                );
+            }
+            return attachments;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            CloseConnection.close(preparedStatement, resultSet);
+        }
+        return attachments;
+    }
 
     @Override
     public Attachment getOne(Long taskId) {

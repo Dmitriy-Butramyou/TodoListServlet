@@ -8,6 +8,9 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:include page="parts/navbar.jsp"></jsp:include>
+
+<div class="list-group col-md-5 mx-auto mt-4">
+
 <h4>That deleted tasks.</h4>
 
 <form action = "/deleteAll">
@@ -46,4 +49,5 @@
         } else out.println("<p>No deleted tasks.</p>");
     %>
 </table>
+</div>
 <jsp:include page="parts/footer.jsp"></jsp:include>
