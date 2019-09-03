@@ -15,7 +15,9 @@ public interface TaskDao {
 
     Boolean remove(Long taskId);
     void removeAll(Long userId);
+    void removeAttachment(Long taskId);
     Task save(Task task);
+
 
     List<Task> findAllByUser(Long userId);
     List<Task> findAllByPerformed(Long userId);

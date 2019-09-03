@@ -1,10 +1,7 @@
 package controller.web;
 
-import dao.AttachmentDao;
 import dao.TaskDao;
-import dao.impl.AttachmentDaoImpl;
 import dao.impl.TaskDaoImpl;
-import model.Attachment;
 import model.Task;
 import model.User;
 
@@ -21,7 +18,6 @@ import java.util.List;
 public class TaskShowServlet extends HttpServlet {
 
     private TaskDao taskDao = new TaskDaoImpl();
-    private AttachmentDao attachmentDao = new AttachmentDaoImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -30,10 +26,8 @@ public class TaskShowServlet extends HttpServlet {
 
 
         if (userSession != null) {
-            List<Attachment> attachments = attachmentDao.getAll();
             List<Task> tasks = taskDao.findAllByUser(userSession.getId());
 
-            req.setAttribute("attachments", attachments);
             req.setAttribute("name", userSession.getName());
             req.setAttribute("tasks", tasks);
             req.getRequestDispatcher("view/showTasks.jsp")

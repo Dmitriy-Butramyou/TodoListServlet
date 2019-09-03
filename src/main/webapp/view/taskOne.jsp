@@ -33,36 +33,6 @@
 
         </div>
         <div class="card-footer text-muted">
-            <c:if test="${not empty attachment}">
-            ${attachment.originalName}
-            <a class="btn btn-outline-danger ml-2" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-                Replace file
-            </a>
-            <div class="collapse" id="collapseExample" >
-                <div class="form-group row">
-                    <div class="mx-auto mt-3">
-                        <input type="file"  name="file" class="form-control-file" id="exampleFormControlFile1">                    
-                    </div>
-                </div>
-
-            </div>
-            </c:if>
-
-            <c:if test="${empty attachment}">
-            <div>
-                <a class="btn btn-outline-success" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-                    Add file
-                </a>
-
-                <div class="collapse" id="collapseExample">
-                    <div class="form-group row">
-                        <div class="mx-auto mt-3">
-                            <input type="file"  name="file" class="form-control-file" id="exampleFormControlFile1">                    </div>
-                    </div>
-                </div>
-
-            </div>
-            </c:if>
 
         <div class="form-group">
             <button type="submit" class="btn btn-primary mb-2 mt-2">Save</button>

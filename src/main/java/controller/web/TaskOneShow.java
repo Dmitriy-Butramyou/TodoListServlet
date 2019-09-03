@@ -1,10 +1,7 @@
 package controller.web;
 
-import dao.AttachmentDao;
 import dao.TaskDao;
-import dao.impl.AttachmentDaoImpl;
 import dao.impl.TaskDaoImpl;
-import model.Attachment;
 import model.Task;
 import model.User;
 
@@ -20,7 +17,6 @@ import java.io.IOException;
 public class TaskOneShow extends HttpServlet {
 
     private TaskDao taskDao = new TaskDaoImpl();
-    private AttachmentDao attachmentDao = new AttachmentDaoImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -32,10 +28,8 @@ public class TaskOneShow extends HttpServlet {
             Long taskId = Long.valueOf(pathInfo[1]);
 
             Task task = taskDao.getOne(taskId);
-            Attachment attachment = attachmentDao.getOne(taskId);
 
             req.setAttribute("task", task);
-            req.setAttribute("attachment", attachment);
             req.getRequestDispatcher("view/taskOne.jsp")
                     .forward(req, resp);
         } else {

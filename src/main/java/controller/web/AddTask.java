@@ -1,9 +1,6 @@
 package controller.web;
 
-import dao.AttachmentDao;
-import dao.impl.AttachmentDaoImpl;
 import dao.impl.TaskDaoImpl;
-import model.Attachment;
 import model.State;
 import model.Task;
 import model.User;
@@ -28,7 +25,7 @@ import java.util.UUID;
 public class AddTask extends HttpServlet {
 
     private TaskDaoImpl taskDao = new TaskDaoImpl();
-    private AttachmentDao attachmentDao = new AttachmentDaoImpl();
+//    private AttachmentDao attachmentDao = new AttachmentDaoImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -36,7 +33,7 @@ public class AddTask extends HttpServlet {
         User userSession = (User) session.getAttribute("user");
 
 
-        if(userSession != null) {
+        if (userSession != null) {
             req.setAttribute("name", userSession.getName());
             req.setAttribute("user", userSession.getId());
             req.getRequestDispatcher("view/addTask.jsp")
@@ -78,13 +75,18 @@ public class AddTask extends HttpServlet {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+// TODO: 03.09.2019 разобраться с датами
+            Task task = new Task.Builder()
+                    .name(nameTask)
+                    .description(description)
+                    .eventDate(deadlineTime.getTime())
+                    .creationDateTime(deadlineTime.getTime())
+                    .state(State.ACTUAL)
+                    .userId(userId)
+                    .build();
 
-            Task task = new Task(nameTask, description, deadlineTime.getTime(),
-                    deadlineTime.getTime(), State.ACTUAL, userId);
 
-            task = taskDao.save(task);
-
-            if(attachment.getSize() > 0) {
+            if (attachment.getSize() > 0) {
                 InputStream inputStream = attachment.getInputStream();
 
                 // gets absolute path of the web application
@@ -96,7 +98,7 @@ public class AddTask extends HttpServlet {
                 //генерируем уникальный путь
                 String generatedPath = FileUtils.UPLOAD_PATH + FileUtils.getPath();
                 File uploadDir = new File(generatedPath);
-                if(!uploadDir.exists()) {
+                if (!uploadDir.exists()) {
                     uploadDir.mkdirs();
                 }
                 // генерируем уникальное имя
@@ -113,11 +115,16 @@ public class AddTask extends HttpServlet {
                 }
                 outputStream.close();
 
-                Attachment newAttachment = new Attachment(task.getId(), attachment.getSubmittedFileName(),
-                        resultFileName, generatedPath);
-                attachmentDao.save(newAttachment);
+
+//                Attachment newAttachment = new Attachment(task.getId(), attachment.getSubmittedFileName(),
+//                        resultFileName, generatedPath);
+                task.setOriginalFileName(attachment.getSubmittedFileName());
+                task.setGeneratedFileName(resultFileName);
+                task.setGeneratedFilePath(generatedPath);
+//                attachmentDao.save(newAttachment);
             }
 
+            taskDao.save(task);
             resp.sendRedirect("/allTask");
         }
     }

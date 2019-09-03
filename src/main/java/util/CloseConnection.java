@@ -8,7 +8,7 @@ public class CloseConnection {
 
     public static void close(PreparedStatement preparedStatement, ResultSet resultSet) {
         if (preparedStatement != null) {
-            try {
+       try {
                 preparedStatement.close();
             } catch (SQLException e) {
                 e.printStackTrace();

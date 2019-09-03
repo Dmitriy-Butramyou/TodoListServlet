@@ -15,11 +15,9 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!---->
         <mysql.version>5.1.47</mysql.version>
-        <lombok.version>1.18.4</lombok.version>
         <javax.servlet.version>3.1.0</javax.servlet.version>
         <jersey.version>1.19.4</jersey.version>
         <jackson.jaxrs.version>2.4.1</jackson.jaxrs.version>
-        <mapstruct.version>1.3.0.Final</mapstruct.version>
     </properties>
 
     <dependencies>
@@ -35,12 +33,6 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql.version}</version>
-        </dependency>
-        <!-- lombok annotations -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
         </dependency>
         <!-- java servlets -->
         <dependency>
@@ -74,12 +66,6 @@
             <groupId>com.fasterxml.jackson.jaxrs</groupId>
             <artifactId>jackson-jaxrs-json-provider</artifactId>
             <version>${jackson.jaxrs.version}</version>
-        </dependency>
-        <!-- mapstruct converter -->
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct-jdk8</artifactId>
-            <version>${mapstruct.version}</version>
         </dependency>
         <!-- for base64 -->
         <dependency>
@@ -127,18 +113,6 @@
             <configuration>
                 <source>1.8</source>
                 <target>1.8</target>
-                <annotationProcessorPaths>
-                    <path>
-                        <groupId>org.projectlombok</groupId>
-                        <artifactId>lombok</artifactId>
-                        <version>${lombok.version}</version>
-                    </path>
-                    <path>
-                        <groupId>org.mapstruct</groupId>
-                        <artifactId>mapstruct-processor</artifactId>
-                        <version>${mapstruct.version}</version>
-                    </path>
-                </annotationProcessorPaths>
             </configuration>
         </plugin>
     </plugins>

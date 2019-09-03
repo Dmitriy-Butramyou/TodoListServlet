@@ -24,8 +24,8 @@ public class UserDaoImpl implements UserDao {
             preparedStatement.setLong(1, userId);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                return User
-                        .builder()
+                return new  User
+                        .Builder()
                         .id(resultSet.getLong(1))
                         .name(resultSet.getString(2))
                         .password(resultSet.getString(3))
@@ -49,8 +49,8 @@ public class UserDaoImpl implements UserDao {
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 userList.add(
-                        User
-                                .builder()
+                        new User
+                                .Builder()
                                 .id(resultSet.getLong(1))
                                 .name(resultSet.getString(2))
                                 .password(resultSet.getString(3))

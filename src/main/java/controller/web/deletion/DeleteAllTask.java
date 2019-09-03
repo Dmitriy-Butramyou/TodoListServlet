@@ -1,10 +1,7 @@
 package controller.web.deletion;
 
-import dao.AttachmentDao;
 import dao.TaskDao;
-import dao.impl.AttachmentDaoImpl;
 import dao.impl.TaskDaoImpl;
-import model.Attachment;
 import model.Task;
 import model.User;
 import util.FileUtils;
@@ -21,7 +18,7 @@ import java.io.IOException;
 public class DeleteAllTask extends HttpServlet {
 
     private TaskDao taskDao = new TaskDaoImpl();
-    private AttachmentDao attachmentDao = new AttachmentDaoImpl();
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -31,16 +28,12 @@ public class DeleteAllTask extends HttpServlet {
         Iterable<Task> tasks = taskDao.findAllByBasket(userSession.getId());
 
         for (Task task : tasks) {
-            Attachment attachment = attachmentDao.getOne(task.getId());
-            if(attachment != null) {
-                if(FileUtils.removeFile(attachment.getGeneratedPath(), attachment.getGeneratedName())) {
-                    attachmentDao.remove(attachment.getId());
-                }
+            if (task.getOriginalFileName() != null) {
+                FileUtils.removeFile(task.getGeneratedFilePath(), task.getGeneratedFileName());
             }
-            taskDao.remove(task.getId());
         }
 
-//        taskDao.removeAll(userSession.getId());
+        taskDao.removeAll(userSession.getId());
 
         String path = req.getContextPath() + "/basket";
         resp.sendRedirect(path);

@@ -31,7 +31,6 @@ public class CreateUser  extends HttpServlet {
         req.setAttribute("error", "Wrong data");
 
         List<User> userList = userDao.getAll();
-        User newUser = new User();
         Boolean uniqueName = true;
         Boolean addUser = false;
 
@@ -47,8 +46,10 @@ public class CreateUser  extends HttpServlet {
                 }
             }
             if(uniqueName) {
-                newUser.setName(userName);
-                newUser.setPassword(password);
+                User newUser = new User.Builder()
+                        .name(userName)
+                        .password(password)
+                        .build();
                 userDao.save(newUser);
                 addUser = true;
             }

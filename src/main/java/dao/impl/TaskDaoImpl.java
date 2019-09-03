@@ -1,6 +1,5 @@
 package dao.impl;
 
-import dao.AttachmentDao;
 import dao.TaskDao;
 import jdbc.connector.MySqlConnector;
 import jdbc.query.MySqlQuery;
@@ -19,7 +18,6 @@ import java.util.List;
 public class TaskDaoImpl implements TaskDao {
 
     private Connection connection = MySqlConnector.getInstance().getConnection();
-    private AttachmentDao attachmentDao = new AttachmentDaoImpl();
 
 
     @Override
@@ -32,8 +30,8 @@ public class TaskDaoImpl implements TaskDao {
             preparedStatement.setLong(1, taskId);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                return Task
-                        .builder()
+                return new Task
+                        .Builder()
                         .id(resultSet.getLong(1))
                         .name(resultSet.getString(2))
                         .description(resultSet.getString(3))
@@ -41,6 +39,9 @@ public class TaskDaoImpl implements TaskDao {
                         .creationDateTime(resultSet.getLong(5))
                         .state(State.getState(resultSet.getInt(6)))
                         .userId(resultSet.getLong(7))
+                        .originalFileName(resultSet.getString(8))
+                        .generatedFileName(resultSet.getString(9))
+                        .generatedFilePath(resultSet.getString(10))
                         .build();
             }
         } catch (SQLException e) {
@@ -72,8 +73,8 @@ public class TaskDaoImpl implements TaskDao {
             List<Task> taskList = new ArrayList<>();
             while (resultSet.next()) {
                 taskList.add(
-                        Task
-                                .builder()
+                        new Task
+                                .Builder()
                                 .id(resultSet.getLong(1))
                                 .name(resultSet.getString(2))
                                 .description(resultSet.getString(3))
@@ -81,6 +82,9 @@ public class TaskDaoImpl implements TaskDao {
                                 .creationDateTime(resultSet.getLong(5))
                                 .state(State.getState(resultSet.getInt(6)))
                                 .userId(resultSet.getLong(7))
+                                .originalFileName(resultSet.getString(8))
+                                .generatedFileName(resultSet.getString(9))
+                                .generatedFilePath(resultSet.getString(10))
                                 .build()
                 );
             }
@@ -160,8 +164,11 @@ public class TaskDaoImpl implements TaskDao {
             preparedStatement.setInt(5, State.getNumber(task.getState()));
             //немного изменил
             preparedStatement.setLong(6, task.getUserId());
+            preparedStatement.setString(7, task.getOriginalFileName());
+            preparedStatement.setString(8, task.getGeneratedFileName());
+            preparedStatement.setString(9, task.getGeneratedFilePath());
             if (task.getId() != null) {
-                preparedStatement.setLong(7, task.getId());
+                preparedStatement.setLong(10, task.getId());
                 return preparedStatement.executeUpdate() > 0 ? task : null;
             } else {
                 preparedStatement.executeUpdate();
@@ -239,6 +246,21 @@ public class TaskDaoImpl implements TaskDao {
 //            } else {
 //                // записать в лог
 //            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            CloseConnection.close(preparedStatement, resultSet);
+        }
+    }
+
+    @Override
+    public void removeAttachment(Long taskId) {
+        String query = MySqlQuery.getInstance().getQuery("attachmentDelete");
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setLong(1, taskId);
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
             CloseConnection.close(preparedStatement, resultSet);
