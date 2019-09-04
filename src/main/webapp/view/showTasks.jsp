@@ -4,8 +4,8 @@
 <jsp:include page="parts/navbar.jsp"></jsp:include>
 
 <div class="list-group col-md-5 mx-auto mt-4">
-    <%--<h4>${location}</h4>--%>
-    <form method="get" action="#">
+    <h4>${location}</h4>
+    <form method="get">
         <div class="btn-group mb-3" role="group" aria-label="Basic example">
             <button type="submit" class="btn btn-outline-primary" name="day" value="All">All</button>
             <button type="submit" class="btn btn-outline-primary" name="day" value="Today">Today</button>
@@ -34,9 +34,9 @@
     </div>
 </div>
 
-<span id="result"></span>
+<%--<span id="result"></span>--%>
 <c:forEach var="task" items="${tasks}">
-    <form id="mainForm" name="mainForm">
+    <form method="post" enctype="multipart/form-data">
         <div class="card col-md-5 mx-auto">
             <div class="card-header">
                 <div class="btn-group" role="group" aria-label="Basic example">
@@ -47,26 +47,37 @@
                     <a href="/mark_delete/${task.id}">
                         <button type="button" class="badge badge-pill badge-danger">Delete</button>
                     </a>
-                    <a href="/delete_task/${task.id}">
-                        <button type="button" class="badge badge-pill badge-info">Delete file</button>
-                    </a>
-                    <a href="#">
-                        <button type="button" class="badge badge-pill badge-light">Add file</button>
-                    </a>
+                    <c:if test="${not empty task.originalFileName}">
+                        <a href="/delete_task/${task.id}">
+                            <button type="button" class="badge badge-pill badge-info">Delete file</button>
+                        </a>
+                    </c:if>
+                    <c:if test="${empty task.originalFileName}">
+                        <a class="badge badge-pill badge-light" data-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false" aria-controls="collapseExample1">
+                            Add file
+                        </a>
+                        <div class="collapse" id="collapseExample1">
+                            <div class="card card-body">
+                                <div>
+                                    <input type="hidden" name="taskId" value="${task.id}">
+                                    <input type="file" name="attachment">
+                                    <button type="submit">Post</button>
+                                </div>
+                            </div>
+                        </div>
+                    </c:if>
+
                 </div>
             </div>
             <div class="card-body">
                 <h5 class="card-title">Deadline: </h5>
                 <p class="card-text">${task.description}</p>
-                    <%--<%--%>
-                    <%--List<Attachment> attachments = (List<Attachment>) request.getAttribute("attachments");--%>
-                    <%--if (attachments != null && !attachments.isEmpty()) {--%>
-                    <%----%>
-                    <%--};--%>
-                    <%--%>--%>
-
-
-                    <%--<a href="#" class="btn btn-primary">Go somewhere</a>--%>
+                <c:if test="${not empty task.originalFileName}">
+                    <a href="#">${task.originalFileName}</a>
+                </c:if>
+                <c:if test="${empty task.originalFileName}">
+                    <h6>File empty</h6>
+                </c:if>
             </div>
         </div>
     </form>

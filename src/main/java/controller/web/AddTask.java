@@ -4,28 +4,24 @@ import dao.impl.TaskDaoImpl;
 import model.State;
 import model.Task;
 import model.User;
+import util.DateUtil;
 import util.FileUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.UUID;
 
 @WebServlet("/addTask")
 @MultipartConfig
 public class AddTask extends HttpServlet {
 
     private TaskDaoImpl taskDao = new TaskDaoImpl();
-//    private AttachmentDao attachmentDao = new AttachmentDaoImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -62,7 +58,7 @@ public class AddTask extends HttpServlet {
         if (nameTask != null && !nameTask.trim().isEmpty() && description != null && !description.trim().isEmpty()) {
 
 //             TODO: 05.08.2019 сегодняшняя дата для проверки валидности деадлайна.
-//            Date nowTime = DateUtil.setTimeToMidnight(new Date());
+            Date nowTime = DateUtil.setTimeToMidnight(new Date());
 
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date deadlineTime = null;
@@ -80,52 +76,18 @@ public class AddTask extends HttpServlet {
                     .name(nameTask)
                     .description(description)
                     .eventDate(deadlineTime.getTime())
-                    .creationDateTime(deadlineTime.getTime())
+                    .creationDateTime(nowTime.getTime())
                     .state(State.ACTUAL)
                     .userId(userId)
                     .build();
 
 
-            if (attachment.getSize() > 0) {
-                InputStream inputStream = attachment.getInputStream();
-
-                // gets absolute path of the web application
-//                String appPath = request.getServletContext().getRealPath("");
-                // constructs path of the directory to save uploaded file
-//                String savePath = appPath + File.separator + SAVE_DIR;
-
-
-                //генерируем уникальный путь
-                String generatedPath = FileUtils.UPLOAD_PATH + FileUtils.getPath();
-                File uploadDir = new File(generatedPath);
-                if (!uploadDir.exists()) {
-                    uploadDir.mkdirs();
-                }
-                // генерируем уникальное имя
-                String uuidFile = UUID.randomUUID().toString();
-                String resultFileName = uuidFile + "." + attachment.getSubmittedFileName();
-
-                File file = new File(generatedPath, resultFileName);
-                FileOutputStream outputStream = new FileOutputStream(file);
-
-                int read = 0;
-                byte[] bytes = new byte[1024];
-                while ((read = inputStream.read(bytes)) != -1) {
-                    outputStream.write(bytes, 0, read);
-                }
-                outputStream.close();
-
-
-//                Attachment newAttachment = new Attachment(task.getId(), attachment.getSubmittedFileName(),
-//                        resultFileName, generatedPath);
-                task.setOriginalFileName(attachment.getSubmittedFileName());
-                task.setGeneratedFileName(resultFileName);
-                task.setGeneratedFilePath(generatedPath);
-//                attachmentDao.save(newAttachment);
-            }
+            //записываем файл
+            task = FileUtils.uploadAttachment(attachment, task);
 
             taskDao.save(task);
             resp.sendRedirect("/allTask");
         }
     }
+
 }
