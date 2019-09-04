@@ -34,7 +34,6 @@
     </div>
 </div>
 
-<%--<span id="result"></span>--%>
 <c:forEach var="task" items="${tasks}">
     <form method="post" enctype="multipart/form-data">
         <div class="card col-md-5 mx-auto">
@@ -70,7 +69,9 @@
                 </div>
             </div>
             <div class="card-body">
-                <h5 class="card-title">Deadline: </h5>
+                <%--<h5 class="card-title">Deadline:--%>
+    <%----%>
+                <%--</h5>--%>
                 <p class="card-text">${task.description}</p>
                 <c:if test="${not empty task.originalFileName}">
                     <a href="#">${task.originalFileName}</a>

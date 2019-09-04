@@ -7,8 +7,6 @@ import java.util.List;
 public interface TaskDao {
 
     Task getOne(Long taskId);
-    List<Task> findAll(String day);
-//    List<Task> findAll();
     void markAsDeleted(Task task);
     void markAsComplete(Task task);
     void markAsActual(Task task);
@@ -20,6 +18,7 @@ public interface TaskDao {
 
 
     List<Task> findAllByUser(Long userId);
+    List<Task> findByUserAndDay(Long userId, Long time, Boolean relevance);
     List<Task> findAllByPerformed(Long userId);
     List<Task> findAllByBasket(Long userId);
 }

@@ -42,15 +42,17 @@ public class TaskShowServlet extends HttpServlet {
                 switch (day) {
                     case "Today":
                         // TODO: 04.09.2019  запрос к БД
+                        tasks = taskDao.findByUserAndDay(userSession.getId(), nowTime, true);
                         location = "Tasks for today";
                         break;
                     case "Tomorrow":
                         // TODO: 04.09.2019  запрос к БД
-                        nowTime = nowTime + DateUtil.ONE_DAY;
+                        tasks = taskDao.findByUserAndDay(userSession.getId(), (nowTime + DateUtil.ONE_DAY), true);
                         location = "Tasks for tomorrow";
                         break;
                     case "Deadline Missing":
                         // TODO: 04.09.2019  запрос к БД
+                        tasks = taskDao.findByUserAndDay(userSession.getId(), nowTime, false);
                         location = "Tasks with a missed deadline";
                         break;
                 }
@@ -58,8 +60,9 @@ public class TaskShowServlet extends HttpServlet {
             if(deadline != null && !deadline.isEmpty()) {
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 try {
-                    Date deadlineTime = dateFormat.parse(deadline);
+                    Long deadlineTime = DateUtil.setTimeToMidnight(dateFormat.parse(deadline)).getTime();
                     // TODO: 04.09.2019  запрос к БД
+                    tasks = taskDao.findByUserAndDay(userSession.getId(), deadlineTime, true);
                     location = "Tasks for " + deadline;
                 } catch (ParseException e) {
                     e.printStackTrace();

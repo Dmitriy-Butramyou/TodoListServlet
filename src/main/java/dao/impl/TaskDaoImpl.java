@@ -71,24 +71,8 @@ public class TaskDaoImpl implements TaskDao {
             preparedStatement.setLong(1, userIdOrTime);
             resultSet = preparedStatement.executeQuery();
             List<Task> taskList = new ArrayList<>();
-            while (resultSet.next()) {
-                taskList.add(
-                        new Task
-                                .Builder()
-                                .id(resultSet.getLong(1))
-                                .name(resultSet.getString(2))
-                                .description(resultSet.getString(3))
-                                .eventDate(resultSet.getLong(4))
-                                .creationDateTime(resultSet.getLong(5))
-                                .state(State.getState(resultSet.getInt(6)))
-                                .userId(resultSet.getLong(7))
-                                .originalFileName(resultSet.getString(8))
-                                .generatedFileName(resultSet.getString(9))
-                                .generatedFilePath(resultSet.getString(10))
-                                .build()
-                );
-            }
-            return taskList;
+
+            return addTasksToTheList(resultSet, taskList);
         } catch (SQLException e) {
             e.printStackTrace();
             CloseConnection.close(preparedStatement, resultSet);
@@ -96,22 +80,59 @@ public class TaskDaoImpl implements TaskDao {
         return null;
     }
 
-    @Override
-    public List<Task> findAll(String day) {
-        String query;
-        if (day.equalsIgnoreCase("today") || day.equalsIgnoreCase("tomorrow")) {
-            query = MySqlQuery.getInstance().getQuery("taskFindAllByDay");
-        } else if (day.equalsIgnoreCase("someday")) {
-            query = MySqlQuery.getInstance().getQuery("taskFindAllSomeday");
-        } else {
-            return new ArrayList<>(0);
+    private List<Task> addTasksToTheList(ResultSet resultSet, List<Task> taskList) throws SQLException {
+        while (resultSet.next()) {
+            taskList.add(
+                    new Task
+                            .Builder()
+                            .id(resultSet.getLong(1))
+                            .name(resultSet.getString(2))
+                            .description(resultSet.getString(3))
+                            .eventDate(resultSet.getLong(4))
+                            .creationDateTime(resultSet.getLong(5))
+                            .state(State.getState(resultSet.getInt(6)))
+                            .userId(resultSet.getLong(7))
+                            .originalFileName(resultSet.getString(8))
+                            .generatedFileName(resultSet.getString(9))
+                            .generatedFilePath(resultSet.getString(10))
+                            .build()
+            );
         }
-        long dateLong = day.equalsIgnoreCase("today") ? getTime(0) : getTime(86400000);
-
-        List<Task> taskList = findAllBy(dateLong, query);
-        if (taskList != null) return taskList;
-        return new ArrayList<>(0);
+        return taskList;
     }
+
+    /**
+     * Получение заданий по дням
+     *
+     * @param userId Id из сессии юзера
+     * @param time   Дата запроса
+     * @return
+     */
+    @Override
+    public List<Task> findByUserAndDay(Long userId, Long time, Boolean relevance) {
+        String query;
+        if (relevance) {
+            query = MySqlQuery.getInstance().getQuery("taskFindByUserAndDay");
+        } else {
+            query = MySqlQuery.getInstance().getQuery("taskFindByUserDeadlineMissing");
+        }
+
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setLong(1, userId);
+            preparedStatement.setLong(2, time);
+            resultSet = preparedStatement.executeQuery();
+            List<Task> taskList = new ArrayList<>();
+            return addTasksToTheList(resultSet, taskList);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            CloseConnection.close(preparedStatement, resultSet);
+        }
+        return null;
+    }
+
 
     /**
      * get all where state = 3
