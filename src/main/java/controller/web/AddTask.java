@@ -75,8 +75,8 @@ public class AddTask extends HttpServlet {
             Task task = new Task.Builder()
                     .name(nameTask)
                     .description(description)
-                    .eventDate(deadlineTime.getTime())
-                    .creationDateTime(nowTime.getTime())
+                    .eventDate(deadlineTime)
+                    .creationDateTime(nowTime)
                     .state(State.ACTUAL)
                     .userId(userId)
                     .build();

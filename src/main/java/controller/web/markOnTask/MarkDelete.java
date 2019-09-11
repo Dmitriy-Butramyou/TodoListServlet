@@ -32,7 +32,6 @@ public class MarkDelete  extends HttpServlet {
         if(!isDeleted) {
             taskDao.markAsDeleted(task);
         } else {
-            task.setEventDate(DateUtil.setTimeToMidnight(new Date()).getTime());
             taskDao.markAsActual(task);
         }
 

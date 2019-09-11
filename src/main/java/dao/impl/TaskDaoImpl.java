@@ -6,6 +6,7 @@ import jdbc.query.MySqlQuery;
 import model.State;
 import model.Task;
 import util.CloseConnection;
+import util.DateUtil;
 
 import java.sql.*;
 import java.text.DateFormat;
@@ -35,8 +36,8 @@ public class TaskDaoImpl implements TaskDao {
                         .id(resultSet.getLong(1))
                         .name(resultSet.getString(2))
                         .description(resultSet.getString(3))
-                        .eventDate(resultSet.getLong(4))
-                        .creationDateTime(resultSet.getLong(5))
+                        .eventDate(new Date(resultSet.getLong(4)))
+                        .creationDateTime(new Date(resultSet.getLong(5)))
                         .state(State.getState(resultSet.getInt(6)))
                         .userId(resultSet.getLong(7))
                         .originalFileName(resultSet.getString(8))
@@ -88,8 +89,8 @@ public class TaskDaoImpl implements TaskDao {
                             .id(resultSet.getLong(1))
                             .name(resultSet.getString(2))
                             .description(resultSet.getString(3))
-                            .eventDate(resultSet.getLong(4))
-                            .creationDateTime(resultSet.getLong(5))
+                            .eventDate(new Date(resultSet.getLong(4)))
+                            .creationDateTime(new Date(resultSet.getLong(5)))
                             .state(State.getState(resultSet.getInt(6)))
                             .userId(resultSet.getLong(7))
                             .originalFileName(resultSet.getString(8))
@@ -180,8 +181,8 @@ public class TaskDaoImpl implements TaskDao {
                     connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, task.getName());
             preparedStatement.setString(2, task.getDescription());
-            preparedStatement.setLong(3, task.getEventDate());
-            preparedStatement.setLong(4, task.getCreationDateTime());
+            preparedStatement.setLong(3, task.getEventDate().getTime());
+            preparedStatement.setLong(4, task.getCreationDateTime().getTime());
             preparedStatement.setInt(5, State.getNumber(task.getState()));
             //немного изменил
             preparedStatement.setLong(6, task.getUserId());
@@ -225,7 +226,7 @@ public class TaskDaoImpl implements TaskDao {
     public void markAsActual(Task task) {
         // Установка сегодняшней даты
         Boolean isDeleted = task.getState().equals(State.DELETE);
-        task.setEventDate(isDeleted ? getTime(0) : task.getEventDate());
+        task.setEventDate(isDeleted ? DateUtil.setTimeToMidnight(new Date()) : task.getEventDate());
         task.setState(State.ACTUAL);
         save(task);
     }

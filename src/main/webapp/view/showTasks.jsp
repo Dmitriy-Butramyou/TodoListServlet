@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <jsp:include page="parts/navbar.jsp"></jsp:include>
@@ -69,9 +70,8 @@
                 </div>
             </div>
             <div class="card-body">
-                <%--<h5 class="card-title">Deadline:--%>
-    <%----%>
-                <%--</h5>--%>
+
+                <h6 class="card-title">Deadline: <fmt:formatDate type="date" value="${task.eventDate}" /> </h6>
                 <p class="card-text">${task.description}</p>
                 <c:if test="${not empty task.originalFileName}">
                     <a href="/download/${task.id}">${task.originalFileName}</a>

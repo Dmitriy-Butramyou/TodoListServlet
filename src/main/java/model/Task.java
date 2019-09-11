@@ -1,12 +1,14 @@
 package model;
 
+import java.util.Date;
+
 public class Task {
 
     private Long id;
     private String name;
     private String description;
-    private Long eventDate;
-    private Long creationDateTime;
+    private Date eventDate;
+    private Date creationDateTime;
     private State state;
     private String originalFileName;
     private String generatedFileName;
@@ -17,7 +19,7 @@ public class Task {
         this.id = id;
     }
 
-    public void setEventDate(Long eventDate) {
+    public void setEventDate(Date eventDate) {
         this.eventDate = eventDate;
     }
 
@@ -37,11 +39,11 @@ public class Task {
         return description;
     }
 
-    public Long getEventDate() {
+    public Date getEventDate() {
         return eventDate;
     }
 
-    public Long getCreationDateTime() {
+    public Date getCreationDateTime() {
         return creationDateTime;
     }
 
@@ -77,19 +79,6 @@ public class Task {
         this.generatedFilePath = generatedFilePath;
     }
 
-    @Override
-    public String toString() {
-        return "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", eventDate=" + eventDate +
-                ", creationDateTime=" + creationDateTime +
-                ", state=" + state +
-                ", originalFileName='" + originalFileName + '\'' +
-                ", generatedFileName='" + generatedFileName + '\'' +
-                ", generatedFilePath='" + generatedFilePath + '\'' +
-                ", userId=" + userId;
-    }
 
     private Task(Builder builder){
         this.id = builder.id;
@@ -107,8 +96,8 @@ public class Task {
         private Long id;
         private String name;
         private String description;
-        private Long eventDate;
-        private Long creationDateTime;
+        private Date eventDate;
+        private Date creationDateTime;
         private State state;
         private String originalFileName;
         private String generatedFileName;
@@ -133,12 +122,12 @@ public class Task {
             return this;
         }
 
-        public Builder eventDate(Long eventDate) {
+        public Builder eventDate(Date eventDate) {
             this.eventDate = eventDate;
             return this;
         }
 
-        public Builder creationDateTime(Long creationDateTime) {
+        public Builder creationDateTime(Date creationDateTime) {
             this.creationDateTime = creationDateTime;
             return this;
         }
