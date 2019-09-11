@@ -19,7 +19,6 @@ public class CreateUser  extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("error", "");
         req.getRequestDispatcher("view/addUser.jsp")
                 .forward(req, resp);
     }
@@ -28,7 +27,6 @@ public class CreateUser  extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
-        req.setAttribute("error", "Wrong data");
 
         List<User> userList = userDao.getAll();
         Boolean uniqueName = true;
@@ -36,8 +34,16 @@ public class CreateUser  extends HttpServlet {
 
         String userName = req.getParameter("userName");
         String password = req.getParameter("password");
+        String retypePassword = req.getParameter("retypePassword");
 
-        if(userName != null && !userName.trim().isEmpty() && password != null && !password.trim().isEmpty()) {
+        boolean checkPassword = (password != null &&
+                !password.trim().isEmpty() &&
+                retypePassword != null &&
+                !retypePassword.trim().isEmpty() &&
+                password.equals(retypePassword));
+
+
+        if(checkPassword && userName != null && !userName.trim().isEmpty()) {
             for (User user : userList) {
                 if(user.getName().equals(userName)) {
                     uniqueName = false;
@@ -60,6 +66,7 @@ public class CreateUser  extends HttpServlet {
             String path = req.getContextPath() + "/";
             resp.sendRedirect(path);
         } else {
+            req.setAttribute("error", "Wrong data");
             req.getRequestDispatcher("view/addUser.jsp")
                     .forward(req, resp);
         }

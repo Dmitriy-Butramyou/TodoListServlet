@@ -74,7 +74,7 @@
                 <%--</h5>--%>
                 <p class="card-text">${task.description}</p>
                 <c:if test="${not empty task.originalFileName}">
-                    <a href="#">${task.originalFileName}</a>
+                    <a href="/download/${task.id}">${task.originalFileName}</a>
                 </c:if>
                 <c:if test="${empty task.originalFileName}">
                     <h6>File empty</h6>

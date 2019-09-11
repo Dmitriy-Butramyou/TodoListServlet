@@ -2,26 +2,29 @@ package util;
 
 import model.Task;
 
+import javax.servlet.ServletContext;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponseWrapper;
 import javax.servlet.http.Part;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import javax.xml.ws.Response;
+import java.io.*;
 import java.util.Random;
 import java.util.UUID;
 
 public class FileUtils {
 
     public final static String UPLOAD_PATH = "D:/Program/MyStudy/TodoListServlet/src/upload";
+//    public final static String UPLOAD_PATH = "C:/TodoListServlet/upload";
 
     private static String getLetter() {
         return String.valueOf((char) (new Random().nextInt((122 - 97) + 1) + 97));
     }
 
     public static String getPath() {
-        StringBuilder path = new StringBuilder("/");
+        StringBuilder path = new StringBuilder(File.separator);
         for (int i = 0; i < 10; i++) {
-            path.append(getLetter()).append("/");
+            path.append(getLetter()).append(File.separator);
         }
         return path.toString();
     }
@@ -65,5 +68,37 @@ public class FileUtils {
             task.setGeneratedFilePath(generatedPath);
         }
         return task;
+    }
+
+    public static void downloadFile(Task task, HttpServletResponse resp, ServletContext servletContext) throws IOException {
+        File file = new File(task.getGeneratedFilePath() + File.separator + task.getGeneratedFileName());
+
+        FileInputStream inputStream = new FileInputStream(file);
+
+        String mimeType = servletContext.getMimeType(task.getOriginalFileName());
+        if (mimeType == null) {
+            mimeType = "application/octet-stream";
+        }
+
+        resp.setContentType(mimeType);
+        resp.setContentLength((int) file.length());
+
+        // forces download
+        String headerKey = "Content-Disposition";
+        String headerValue = String.format("attachment; filename=\"%s\"", task.getOriginalFileName());
+        resp.setHeader(headerKey, headerValue);
+
+        // obtains response's output stream
+        OutputStream outStream = resp.getOutputStream();
+
+        byte[] buffer = new byte[4096];
+        int bytesRead = -1;
+
+        while ((bytesRead = inputStream.read(buffer)) != -1) {
+            outStream.write(buffer, 0, bytesRead);
+        }
+
+        inputStream.close();
+        outStream.close();
     }
 }

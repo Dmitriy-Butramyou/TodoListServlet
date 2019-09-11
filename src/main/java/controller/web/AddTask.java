@@ -47,6 +47,7 @@ public class AddTask extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
+        resp.setCharacterEncoding("UTF-8");
 
         String nameTask = req.getParameter("nameTask");
         String description = req.getParameter("description");
@@ -54,7 +55,6 @@ public class AddTask extends HttpServlet {
         Long userId = Long.valueOf(req.getParameter("userId"));
         Part attachment = req.getPart("attachment");
 
-        resp.setCharacterEncoding("UTF-8");
         if (nameTask != null && !nameTask.trim().isEmpty() && description != null && !description.trim().isEmpty()) {
 
 //             TODO: 05.08.2019 сегодняшняя дата для проверки валидности деадлайна.

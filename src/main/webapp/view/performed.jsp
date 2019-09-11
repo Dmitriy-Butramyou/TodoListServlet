@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="model.Task" %>
 <%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
@@ -13,34 +14,54 @@
 
 <h4>That performed tasks. You COOL!!! :)</h4>
 
-<table border="2">
-    <tr>
-        <td>ID</td>
-        <td>Тема</td>
-        <td>Описание</td>
-        <td>State</td>
-        <td>User Id</td>
-        <td>Действия</td>
-    </tr>
-    <%
-        List<Task> tasks = (List<Task>) request.getAttribute("tasks");
-        if (tasks != null && !tasks.isEmpty()) {
-            for (Task task : tasks) {
-                out.println("<td>" + task.getId() + "</td>");
-                out.println("<td>" + task.getName() + "</td>");
-                out.println("<td>" + task.getDescription() + "</td>");
-                out.println("<td>" + task.getState().toString() + "</td>");
-                out.println("<td>" + task.getUserId() + "</td>");
-                out.println("<td>" + "<form action = \"/mark_delete/" + task.getId() + "\">\n" +
-                        "    <input type=\"submit\" value=\"Mark Delete\">\n" +
-                        "</form>" +
-                        "<form action = \"/mark_complete/" + task.getId() + "\">\n" +
-                        "    <input type=\"submit\" value=\"Mark Actual\">\n" +
-                        "</form>" +"</td>");
-                out.println("<tr>" + "</tr>");
-            }
-        } else out.println("<p>No completed tasks. Try better.</p>");
-    %>
-</table>
 </div>
+<c:forEach var="task" items="${tasks}">
+    <form method="post" enctype="multipart/form-data">
+        <div class="card col-md-5 mx-auto">
+            <div class="card-header">
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <h4>${task.name}</h4>
+                    <a href="/mark_complete/${task.id}">
+                        <button type="button" class="badge badge-pill badge-success">Actual</button>
+                    </a>
+                    <a href="/mark_delete/${task.id}">
+                        <button type="button" class="badge badge-pill badge-danger">Delete</button>
+                    </a>
+                    <c:if test="${not empty task.originalFileName}">
+                        <a href="/delete_task/${task.id}">
+                            <button type="button" class="badge badge-pill badge-info">Delete file</button>
+                        </a>
+                    </c:if>
+                    <c:if test="${empty task.originalFileName}">
+                        <a class="badge badge-pill badge-light" data-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false" aria-controls="collapseExample1">
+                            Add file
+                        </a>
+                        <div class="collapse" id="collapseExample1">
+                            <div class="card card-body">
+                                <div>
+                                    <input type="hidden" name="taskId" value="${task.id}">
+                                    <input type="file" name="attachment">
+                                    <button type="submit">Post</button>
+                                </div>
+                            </div>
+                        </div>
+                    </c:if>
+
+                </div>
+            </div>
+            <div class="card-body">
+                    <%--<h5 class="card-title">Deadline:--%>
+                    <%----%>
+                    <%--</h5>--%>
+                <p class="card-text">${task.description}</p>
+                <c:if test="${not empty task.originalFileName}">
+                    <a href="/download/${task.id}">${task.originalFileName}</a>
+                </c:if>
+                <c:if test="${empty task.originalFileName}">
+                    <h6>File empty</h6>
+                </c:if>
+            </div>
+        </div>
+    </form>
+</c:forEach>
 <jsp:include page="parts/footer.jsp"></jsp:include>
