@@ -41,14 +41,14 @@
             <div class="card-header">
                 <div class="btn-group" role="group" aria-label="Basic example">
                     <h4>${task.name}</h4>
-                    <a href="/mark_complete/${task.id}">
+                    <a href="${pageContext.request.contextPath}/button?command=MARK_COMPLETE&id=${task.id}">
                         <button type="button" class="badge badge-pill badge-success">Complete</button>
                     </a>
-                    <a href="/mark_delete/${task.id}">
+                    <a href="${pageContext.request.contextPath}/button?command=MARK_DELETE&id=${task.id}">
                         <button type="button" class="badge badge-pill badge-danger">Delete</button>
                     </a>
                     <c:if test="${not empty task.originalFileName}">
-                        <a href="/delete_task/${task.id}">
+                        <a href="${pageContext.request.contextPath}/button?command=DELETE_FILE&id=${task.id}">
                             <button type="button" class="badge badge-pill badge-info">Delete file</button>
                         </a>
                     </c:if>
@@ -74,7 +74,8 @@
                 <h6 class="card-title">Deadline: <fmt:formatDate type="date" value="${task.eventDate}" /> </h6>
                 <p class="card-text">${task.description}</p>
                 <c:if test="${not empty task.originalFileName}">
-                    <a href="/download/${task.id}">${task.originalFileName}</a>
+                    <a href="${pageContext.request.contextPath}/button?command=DOWNLOAD_FILE&id=${task.id}">
+                            ${task.originalFileName}</a>
                 </c:if>
                 <c:if test="${empty task.originalFileName}">
                     <h6>File empty</h6>

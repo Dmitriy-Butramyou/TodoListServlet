@@ -36,21 +36,21 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="/allTask">Tasks</a>
+                    <a class="nav-link" href="${pageContext.request.contextPath}/allTask">Tasks</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="/addTask">New Task</a>
+                    <a class="nav-link" href="${pageContext.request.contextPath}/addTask">New Task</a>
                 </li>
 
-                <a href="/performed">
+                <a href="${pageContext.request.contextPath}/performed">
                     <button class="btn btn-outline-success my-2 my-sm-0 ml-3" type="button">
                         Performed
                     </button>
                 </a>
                 </form>
 
-                <a href="/basket">
+                <a href="${pageContext.request.contextPath}/basket">
                     <button class="btn btn-outline-danger my-2 my-sm-0 ml-3" type="button">
                         Basket
                     </button>
@@ -73,7 +73,7 @@
                     <a class="dropdown-item" href="#">Something else here</a>
                 </div>
             </div>
-            <<a href="/sign_out">
+            <<a href="${pageContext.request.contextPath}/button?command=SIGN_OUT">
             <button class="btn btn-outline-light my-2 my-sm-0 ml-3" type="button">Sign Out</button>
         </a>
         </div>

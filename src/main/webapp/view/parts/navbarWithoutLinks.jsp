@@ -22,7 +22,7 @@
 <body>
 <div style="background-color: #0b245d;">
     <nav class="navbar navbar-expand-lg navbar-dark col-sm-10 mx-auto" style="background-color: #0b245d;">
-        <a class="navbar-brand" href="/">
+        <a class="navbar-brand" href="${pageContext.request.contextPath}/">
             ToDoList</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,7 +43,7 @@
                     Please, login
                 </a>
             </div>
-            <<a href="/addUser">
+            <<a href="${pageContext.request.contextPath}/addUser">
             <button class="btn btn-outline-light my-2 my-sm-0 ml-3" type="button">Create account</button>
         </a>
         </div>
