@@ -65,7 +65,7 @@
                         ${name}
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Profile</a>
+                    <a class="dropdown-item" href="${pageContext.request.contextPath}/profile">Profile</a>
 
                     <a class="dropdown-item" href="#">User List</a>
 

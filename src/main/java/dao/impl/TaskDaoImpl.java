@@ -6,7 +6,7 @@ import jdbc.query.MySqlQuery;
 import model.State;
 import model.Task;
 import util.CloseConnection;
-import util.DateUtil;
+import util.DateUtils;
 
 import java.sql.*;
 import java.text.DateFormat;
@@ -54,8 +54,8 @@ public class TaskDaoImpl implements TaskDao {
 
 
     @Override
-    public List<Task> findAllByUser(Long userId) {
-        String query = MySqlQuery.getInstance().getQuery("taskGetAllByUser");
+    public List<Task> findActualByUser(Long userId) {
+        String query = MySqlQuery.getInstance().getQuery("taskGetActualByUser");
 
         List<Task> taskList = findAllBy(userId, query);
         if (taskList != null) return taskList;
@@ -226,14 +226,14 @@ public class TaskDaoImpl implements TaskDao {
     public void markAsActual(Task task) {
         // Установка сегодняшней даты
         Boolean isDeleted = task.getState().equals(State.DELETE);
-        task.setEventDate(isDeleted ? DateUtil.setTimeToMidnight(new Date()) : task.getEventDate());
+        task.setEventDate(isDeleted ? DateUtils.setTimeToMidnight(new Date()) : task.getEventDate());
         task.setState(State.ACTUAL);
         save(task);
     }
 
 
     @Override
-    public Boolean remove(Long taskId) {
+    public boolean remove(Long taskId) {
         String query = MySqlQuery.getInstance().getQuery("taskDelete");
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -255,8 +255,8 @@ public class TaskDaoImpl implements TaskDao {
     }
 
     @Override
-    public void removeAll(Long userId) {
-        String query = MySqlQuery.getInstance().getQuery("taskAllDelete");
+    public void removeAllFromBasket(Long userId) {
+        String query = MySqlQuery.getInstance().getQuery("taskAllDeleteFromBasket");
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
@@ -282,6 +282,29 @@ public class TaskDaoImpl implements TaskDao {
         try {
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setLong(1, taskId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            CloseConnection.close(preparedStatement, resultSet);
+        }
+    }
+
+    @Override
+    public List<Task> findAllByUser(Long userId) {
+        String query = MySqlQuery.getInstance().getQuery("taskAllByUser");
+        List<Task> taskList = findAllBy(userId, query);
+        if (taskList != null) return taskList;
+        return new ArrayList<>(0);
+    }
+
+    @Override
+    public void removeAllByUser(Long userId) {
+        String query = MySqlQuery.getInstance().getQuery("taskDeleteByUser");
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setLong(1, userId);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

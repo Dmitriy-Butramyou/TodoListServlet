@@ -97,4 +97,19 @@ public class UserDaoImpl implements UserDao {
         }
         return null;
     }
+
+    @Override
+    public void remove(Long userId) {
+        String query = MySqlQuery.getInstance().getQuery("userDelete");
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setLong(1, userId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            CloseConnection.close(preparedStatement, resultSet);
+        }
+    }
 }

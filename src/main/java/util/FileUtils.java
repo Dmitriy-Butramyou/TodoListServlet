@@ -23,7 +23,7 @@ public class FileUtils {
 
     public static String getPath() {
         StringBuilder path = new StringBuilder(File.separator);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 5; i++) {
             path.append(getLetter()).append(File.separator);
         }
         return path.toString();

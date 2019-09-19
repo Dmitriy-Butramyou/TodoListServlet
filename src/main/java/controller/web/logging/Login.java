@@ -32,7 +32,7 @@ public class Login extends HttpServlet {
         HttpSession session = req.getSession();
         User sessionUser;
 
-        Boolean login = false;
+        boolean login = false;
         req.setCharacterEncoding("UTF-8");
         String userName = req.getParameter("userName");
         String password = req.getParameter("password");

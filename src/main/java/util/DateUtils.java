@@ -3,7 +3,7 @@ package util;
 import java.util.Calendar;
 import java.util.Date;
 
-public class DateUtil {
+public class DateUtils {
 
     public final static Long ONE_DAY = 86400000L;
 

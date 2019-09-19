@@ -22,6 +22,14 @@ public class User {
         this.id = id;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     private User(Builder builder) {
         this.id = builder.id;
         this.name = builder.name;

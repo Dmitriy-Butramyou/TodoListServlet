@@ -4,7 +4,7 @@ import dao.impl.TaskDaoImpl;
 import model.State;
 import model.Task;
 import model.User;
-import util.DateUtil;
+import util.DateUtils;
 import util.FileUtils;
 
 import javax.servlet.ServletException;
@@ -58,7 +58,7 @@ public class AddTask extends HttpServlet {
         if (nameTask != null && !nameTask.trim().isEmpty() && description != null && !description.trim().isEmpty()) {
 
 //             TODO: 05.08.2019 сегодняшняя дата для проверки валидности деадлайна.
-            Date nowTime = DateUtil.setTimeToMidnight(new Date());
+            Date nowTime = DateUtils.setTimeToMidnight(new Date());
 
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date deadlineTime = null;
@@ -87,6 +87,8 @@ public class AddTask extends HttpServlet {
 
             taskDao.save(task);
             resp.sendRedirect("/allTask");
+        } else {
+            resp.sendRedirect(req.getContextPath() + "/addTask");
         }
     }
 

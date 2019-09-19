@@ -4,7 +4,7 @@ import dao.TaskDao;
 import dao.impl.TaskDaoImpl;
 import model.Task;
 import model.User;
-import util.DateUtil;
+import util.DateUtils;
 import util.FileUtils;
 
 import javax.servlet.ServletException;
@@ -33,9 +33,9 @@ public class TaskShow extends HttpServlet {
         if (userSession != null) {
             String day = req.getParameter("day");
             String deadline = req.getParameter("deadline");
-            List<Task> tasks = taskDao.findAllByUser(userSession.getId());
+            List<Task> tasks = taskDao.findActualByUser(userSession.getId());
 
-            Long nowTime = DateUtil.setTimeToMidnight(new Date()).getTime();
+            Long nowTime = DateUtils.setTimeToMidnight(new Date()).getTime();
             String location = "All task";
 
             if(day != null && !day.isEmpty()) {
@@ -45,7 +45,7 @@ public class TaskShow extends HttpServlet {
                         location = "Tasks for today";
                         break;
                     case "Tomorrow":
-                        tasks = taskDao.findByUserAndDay(userSession.getId(), (nowTime + DateUtil.ONE_DAY), true);
+                        tasks = taskDao.findByUserAndDay(userSession.getId(), (nowTime + DateUtils.ONE_DAY), true);
                         location = "Tasks for tomorrow";
                         break;
                     case "Deadline Missing":
@@ -57,7 +57,7 @@ public class TaskShow extends HttpServlet {
             if(deadline != null && !deadline.isEmpty()) {
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 try {
-                    Long deadlineTime = DateUtil.setTimeToMidnight(dateFormat.parse(deadline)).getTime();
+                    Long deadlineTime = DateUtils.setTimeToMidnight(dateFormat.parse(deadline)).getTime();
                     tasks = taskDao.findByUserAndDay(userSession.getId(), deadlineTime, true);
                     location = "Tasks for " + deadline;
                 } catch (ParseException e) {

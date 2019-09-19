@@ -11,13 +11,15 @@ public interface TaskDao {
     void markAsComplete(Task task);
     void markAsActual(Task task);
 
-    Boolean remove(Long taskId);
-    void removeAll(Long userId);
+    boolean remove(Long taskId);
     void removeAttachment(Long taskId);
+    void removeAllFromBasket(Long userId);
+    void removeAllByUser(Long userId);
     Task save(Task task);
 
 
     List<Task> findAllByUser(Long userId);
+    List<Task> findActualByUser(Long userId);
     List<Task> findByUserAndDay(Long userId, Long time, Boolean relevance);
     List<Task> findAllByPerformed(Long userId);
     List<Task> findAllByBasket(Long userId);
