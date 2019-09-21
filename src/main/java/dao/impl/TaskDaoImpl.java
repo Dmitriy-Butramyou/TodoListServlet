@@ -7,6 +7,7 @@ import model.State;
 import model.Task;
 import util.CloseConnection;
 import util.DateUtils;
+import util.PropertyUtils;
 
 import java.sql.*;
 import java.text.DateFormat;
@@ -20,7 +21,6 @@ public class TaskDaoImpl implements TaskDao {
 
     private Connection connection = MySqlConnector.getInstance().getConnection();
 
-
     @Override
     public Task getOne(Long taskId) {
         String query = MySqlQuery.getInstance().getQuery("taskGetOne");
@@ -31,19 +31,7 @@ public class TaskDaoImpl implements TaskDao {
             preparedStatement.setLong(1, taskId);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                return new Task
-                        .Builder()
-                        .id(resultSet.getLong(1))
-                        .name(resultSet.getString(2))
-                        .description(resultSet.getString(3))
-                        .eventDate(new Date(resultSet.getLong(4)))
-                        .creationDateTime(new Date(resultSet.getLong(5)))
-                        .state(State.getState(resultSet.getInt(6)))
-                        .userId(resultSet.getLong(7))
-                        .originalFileName(resultSet.getString(8))
-                        .generatedFileName(resultSet.getString(9))
-                        .generatedFilePath(resultSet.getString(10))
-                        .build();
+                return getBuildTask(resultSet);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -52,7 +40,6 @@ public class TaskDaoImpl implements TaskDao {
         return null;
     }
 
-
     @Override
     public List<Task> findActualByUser(Long userId) {
         String query = MySqlQuery.getInstance().getQuery("taskGetActualByUser");
@@ -60,46 +47,6 @@ public class TaskDaoImpl implements TaskDao {
         List<Task> taskList = findAllBy(userId, query);
         if (taskList != null) return taskList;
         return new ArrayList<>(0);
-
-    }
-
-    private List<Task> findAllBy(Long userIdOrTime, String query) {
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-
-        try {
-            preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setLong(1, userIdOrTime);
-            resultSet = preparedStatement.executeQuery();
-            List<Task> taskList = new ArrayList<>();
-
-            return addTasksToTheList(resultSet, taskList);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            CloseConnection.close(preparedStatement, resultSet);
-        }
-        return null;
-    }
-
-    private List<Task> addTasksToTheList(ResultSet resultSet, List<Task> taskList) throws SQLException {
-        while (resultSet.next()) {
-            taskList.add(
-                    new Task
-                            .Builder()
-                            .id(resultSet.getLong(1))
-                            .name(resultSet.getString(2))
-                            .description(resultSet.getString(3))
-                            .eventDate(new Date(resultSet.getLong(4)))
-                            .creationDateTime(new Date(resultSet.getLong(5)))
-                            .state(State.getState(resultSet.getInt(6)))
-                            .userId(resultSet.getLong(7))
-                            .originalFileName(resultSet.getString(8))
-                            .generatedFileName(resultSet.getString(9))
-                            .generatedFilePath(resultSet.getString(10))
-                            .build()
-            );
-        }
-        return taskList;
     }
 
     /**
@@ -158,17 +105,6 @@ public class TaskDaoImpl implements TaskDao {
         return new ArrayList<>(0);
     }
 
-
-    private long getTime(long value) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            return dateFormat.parse(dateFormat.format(new Date())).getTime() + value;
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
     @Override
     public Task save(Task task) {
         PreparedStatement preparedStatement = null;
@@ -225,68 +161,34 @@ public class TaskDaoImpl implements TaskDao {
     @Override
     public void markAsActual(Task task) {
         // Установка сегодняшней даты
-        Boolean isDeleted = task.getState().equals(State.DELETE);
+        boolean isDeleted = task.getState().equals(State.DELETE);
         task.setEventDate(isDeleted ? DateUtils.setTimeToMidnight(new Date()) : task.getEventDate());
         task.setState(State.ACTUAL);
         save(task);
     }
 
+    @Override
+    public void remove(Long taskId) {
+        String query = MySqlQuery.getInstance().getQuery("taskDelete");
+        PropertyUtils.findOne(taskId, query, connection);
+    }
 
     @Override
-    public boolean remove(Long taskId) {
-        String query = MySqlQuery.getInstance().getQuery("taskDelete");
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        try {
-            preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setLong(1, taskId);
-            preparedStatement.executeUpdate();
-            return true;
-//            if(preparedStatement.executeUpdate() > 0) {
-//                //записать в лог
-//            } else {
-//                // записать в лог
-//            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            CloseConnection.close(preparedStatement, resultSet);
-        }
-        return false;
+    public void removeAllByUser(Long userId) {
+        String query = MySqlQuery.getInstance().getQuery("taskDeleteByUser");
+        PropertyUtils.findOne(userId, query, connection);
     }
 
     @Override
     public void removeAllFromBasket(Long userId) {
         String query = MySqlQuery.getInstance().getQuery("taskAllDeleteFromBasket");
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        try {
-            preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setLong(1, userId);
-            preparedStatement.executeUpdate();
-//            if(preparedStatement.executeUpdate() > 0) {
-//                //записать в лог
-//            } else {
-//                // записать в лог
-//            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            CloseConnection.close(preparedStatement, resultSet);
-        }
+        PropertyUtils.findOne(userId, query, connection);
     }
 
     @Override
     public void removeAttachment(Long taskId) {
         String query = MySqlQuery.getInstance().getQuery("attachmentDelete");
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        try {
-            preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setLong(1, taskId);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            CloseConnection.close(preparedStatement, resultSet);
-        }
+        PropertyUtils.findOne(taskId, query, connection);
     }
 
     @Override
@@ -297,18 +199,48 @@ public class TaskDaoImpl implements TaskDao {
         return new ArrayList<>(0);
     }
 
-    @Override
-    public void removeAllByUser(Long userId) {
-        String query = MySqlQuery.getInstance().getQuery("taskDeleteByUser");
+    private List<Task> findAllBy(Long userIdOrTime, String query) {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
+
         try {
             preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setLong(1, userId);
-            preparedStatement.executeUpdate();
+            preparedStatement.setLong(1, userIdOrTime);
+            resultSet = preparedStatement.executeQuery();
+            List<Task> taskList = new ArrayList<>();
+
+            return addTasksToTheList(resultSet, taskList);
         } catch (SQLException e) {
             e.printStackTrace();
             CloseConnection.close(preparedStatement, resultSet);
         }
+        return null;
     }
+
+    private List<Task> addTasksToTheList(ResultSet resultSet, List<Task> taskList) throws SQLException {
+        while (resultSet.next()) {
+            taskList.add(
+                    getBuildTask(resultSet)
+            );
+        }
+        return taskList;
+    }
+
+    private Task getBuildTask(ResultSet resultSet) throws SQLException {
+        return new Task
+                .Builder()
+                .id(resultSet.getLong(1))
+                .name(resultSet.getString(2))
+                .description(resultSet.getString(3))
+                .eventDate(new Date(resultSet.getLong(4)))
+                .creationDateTime(new Date(resultSet.getLong(5)))
+                .state(State.getState(resultSet.getInt(6)))
+                .userId(resultSet.getLong(7))
+                .originalFileName(resultSet.getString(8))
+                .generatedFileName(resultSet.getString(9))
+                .generatedFilePath(resultSet.getString(10))
+                .build();
+    }
+
+
 }

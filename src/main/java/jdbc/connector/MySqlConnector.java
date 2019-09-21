@@ -15,7 +15,7 @@ public class MySqlConnector {
 
     /**
      * метод для соединения с БД по параметрам,
-     * читаемые из файла connection.properties
+     * читаемым из файла connection.properties
      */
     private MySqlConnector(){
         Properties properties = PropertyUtils.getProperties("connection.properties");

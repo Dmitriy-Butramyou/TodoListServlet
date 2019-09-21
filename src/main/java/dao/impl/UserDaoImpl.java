@@ -5,6 +5,7 @@ import jdbc.connector.MySqlConnector;
 import jdbc.query.MySqlQuery;
 import model.User;
 import util.CloseConnection;
+import util.PropertyUtils;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -25,11 +26,11 @@ public class UserDaoImpl implements UserDao {
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 return new  User
-                        .Builder()
-                        .id(resultSet.getLong(1))
-                        .name(resultSet.getString(2))
-                        .password(resultSet.getString(3))
-                        .build();
+                                .Builder()
+                                .id(resultSet.getLong(1))
+                                .name(resultSet.getString(2))
+                                .password(resultSet.getString(3))
+                                .build();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -101,15 +102,6 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void remove(Long userId) {
         String query = MySqlQuery.getInstance().getQuery("userDelete");
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        try {
-            preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setLong(1, userId);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            CloseConnection.close(preparedStatement, resultSet);
-        }
+        PropertyUtils.findOne(userId, query, connection);
     }
 }

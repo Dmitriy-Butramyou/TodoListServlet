@@ -28,7 +28,6 @@ public class AddTask extends HttpServlet {
         HttpSession session = req.getSession();
         User userSession = (User) session.getAttribute("user");
 
-
         if (userSession != null) {
             req.setAttribute("name", userSession.getName());
             req.setAttribute("user", userSession.getId());
@@ -38,7 +37,6 @@ public class AddTask extends HttpServlet {
             String path = req.getContextPath() + "/login";
             resp.sendRedirect(path);
         }
-
     }
 
     /**
@@ -80,7 +78,6 @@ public class AddTask extends HttpServlet {
                     .state(State.ACTUAL)
                     .userId(userId)
                     .build();
-
 
             //записываем файл
             task = FileUtils.uploadAttachment(attachment, task);

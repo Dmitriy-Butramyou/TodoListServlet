@@ -16,6 +16,7 @@ public enum State {
         }
         return null;
     }
+
     public static int getNumber(State state) {
         switch (state) {
             case ACTUAL:

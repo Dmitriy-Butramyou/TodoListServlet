@@ -25,7 +25,6 @@ public class PerformedTask extends HttpServlet {
         HttpSession session = req.getSession();
         User userSession = (User) session.getAttribute("user");
 
-
         if(userSession != null) {
             List<Task> tasks = taskDao.findAllByPerformed(userSession.getId());
             req.setAttribute("name", userSession.getName());

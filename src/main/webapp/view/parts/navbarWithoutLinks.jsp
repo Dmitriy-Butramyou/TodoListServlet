@@ -1,6 +1,6 @@
 <%--
   Created by IntelliJ IDEA.
-  User: bytri
+  User: butramyou
   Date: 08.09.2019
   Time: 21:22
   To change this template use File | Settings | File Templates.
@@ -14,6 +14,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <link href="/resource2/css/style.css" rel="stylesheet">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
@@ -23,6 +24,7 @@
 <div style="background-color: #0b245d;">
     <nav class="navbar navbar-expand-lg navbar-dark col-sm-10 mx-auto" style="background-color: #0b245d;">
         <a class="navbar-brand" href="${pageContext.request.contextPath}/">
+            <img src="/resource2/img/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
             ToDoList</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

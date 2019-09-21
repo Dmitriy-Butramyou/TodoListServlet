@@ -29,7 +29,6 @@ public class TaskShow extends HttpServlet {
         HttpSession session = req.getSession();
         User userSession = (User) session.getAttribute("user");
 
-
         if (userSession != null) {
             String day = req.getParameter("day");
             String deadline = req.getParameter("deadline");
@@ -65,8 +64,6 @@ public class TaskShow extends HttpServlet {
                 }
             }
 
-
-
             req.setAttribute("location", location);
             req.setAttribute("name", userSession.getName());
             req.setAttribute("tasks", tasks);
@@ -77,18 +74,15 @@ public class TaskShow extends HttpServlet {
             String path = req.getContextPath() + "/login";
             resp.sendRedirect(path);
         }
-
-
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
+        resp.setCharacterEncoding("UTF-8");
 
         Part attachment = req.getPart("attachment");
         Long taskId = Long.valueOf(req.getParameter("taskId"));
-
-        resp.setCharacterEncoding("UTF-8");
 
         Task task = taskDao.getOne(taskId);
         taskDao.save(FileUtils.uploadAttachment(attachment, task));

@@ -29,8 +29,8 @@ public class CreateUser  extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
 
         List<User> userList = userDao.getAll();
-        Boolean uniqueName = true;
-        Boolean addUser = false;
+        boolean uniqueName = true;
+        boolean addUser = false;
 
         String userName = req.getParameter("userName");
         String password = req.getParameter("password");
@@ -41,7 +41,6 @@ public class CreateUser  extends HttpServlet {
                 retypePassword != null &&
                 !retypePassword.trim().isEmpty() &&
                 password.equals(retypePassword));
-
 
         if(checkPassword && userName != null && !userName.trim().isEmpty()) {
             for (User user : userList) {
@@ -59,9 +58,7 @@ public class CreateUser  extends HttpServlet {
                 userDao.save(newUser);
                 addUser = true;
             }
-
         }
-
         if(addUser) {
             String path = req.getContextPath() + "/";
             resp.sendRedirect(path);

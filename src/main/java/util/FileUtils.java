@@ -21,7 +21,7 @@ public class FileUtils {
         return String.valueOf((char) (new Random().nextInt((122 - 97) + 1) + 97));
     }
 
-    public static String getPath() {
+    private static String getPath() {
         StringBuilder path = new StringBuilder(File.separator);
         for (int i = 0; i < 5; i++) {
             path.append(getLetter()).append(File.separator);

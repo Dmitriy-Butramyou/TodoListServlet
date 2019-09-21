@@ -1,23 +1,12 @@
 <%--
   Created by IntelliJ IDEA.
-  User: bytri
+  User: butramyou
   Date: 19.09.2019
   Time: 12:57
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:include page="parts/navbar.jsp"></jsp:include>
-<script>
-    'use strict';
-    function isSure() {
-        var sure = confirm("Are you sure you want to delete the user? " +
-            "Cancel the action will not be possible.");
-        console.log(sure);
-        if(sure) {
-            location.href = '${pageContext.request.contextPath}/button?command=USER_DELETE';
-        }
-    }
-</script>
 <div class="list-group col-md-5 mx-auto mt-3">
     <a class="badge badge-pill badge-light" data-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false" aria-controls="collapseExample1">
        <h5>${name}</h5>

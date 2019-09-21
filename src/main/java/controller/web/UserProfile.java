@@ -38,17 +38,20 @@ public class UserProfile extends HttpServlet {
             int performed = 0;
             int remote = 0;
             for (Task task : tasks) {
-                if(task.getState().equals(State.COMPLETE))
+                if(task.getState().equals(State.COMPLETE)) {
                     performed++;
-                if(task.getState().equals(State.DELETE))
+                    continue;
+                }
+                if(task.getState().equals(State.DELETE)) {
                     remote++;
+                    continue;
+                }
                 if (date.getTime() > task.getEventDate().getTime() & task.getState().equals(State.ACTUAL)) {
                     deadlineMissing++;
                     continue;
                 }
                 if(task.getState().equals(State.ACTUAL))
                     actual++;
-
             }
 
             req.setAttribute("actual", actual);
@@ -70,7 +73,6 @@ public class UserProfile extends HttpServlet {
         User userSession = (User) session.getAttribute("user");
         String userName = req.getParameter("username");
         String password = req.getParameter("password");
-
 
         if(userName != null && !userName.trim().isEmpty()) {
             userSession.setName(userName);

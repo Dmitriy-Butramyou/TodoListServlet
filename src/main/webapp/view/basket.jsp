@@ -3,7 +3,7 @@
 <%@ page import="model.Task" %>
 <%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
-  User: bytri
+  User: butramyou
   Date: 17.08.2019
   Time: 12:59
   To change this template use File | Settings | File Templates.
@@ -71,6 +71,5 @@
         </div>
     </form>
 </c:forEach>
-
 
 <jsp:include page="parts/footer.jsp"></jsp:include>

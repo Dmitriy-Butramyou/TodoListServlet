@@ -53,10 +53,10 @@
                         </a>
                     </c:if>
                     <c:if test="${empty task.originalFileName}">
-                        <a class="badge badge-pill badge-light" data-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false" aria-controls="collapseExample1">
+                        <a class="badge badge-pill badge-light" data-toggle="collapse" href="#collapseExample${task.id}" role="button" aria-expanded="false" aria-controls="collapseExample1">
                             Add file
                         </a>
-                        <div class="collapse" id="collapseExample1">
+                        <div class="collapse" id="collapseExample${task.id}">
                             <div class="card card-body">
                                 <div>
                                     <input type="hidden" name="taskId" value="${task.id}">

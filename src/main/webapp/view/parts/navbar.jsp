@@ -1,6 +1,6 @@
 <%--
   Created by IntelliJ IDEA.
-  User: bytri
+  User: butramyou
   Date: 22.08.2019
   Time: 13:17
   To change this template use File | Settings | File Templates.
@@ -23,6 +23,7 @@
 <div style="background-color: #0b245d;">
     <nav class="navbar navbar-expand-lg navbar-dark col-sm-10 mx-auto" style="background-color: #0b245d;">
         <a class="navbar-brand" href="#">
+            <img src="/resource2/img/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
             ToDoList</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -55,8 +56,6 @@
                         Basket
                     </button>
                 </a>
-
-
             </ul>
             </a>
 

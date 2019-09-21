@@ -30,7 +30,7 @@ public class Login extends HttpServlet {
 
 
         HttpSession session = req.getSession();
-        User sessionUser;
+        User userSession;
 
         boolean login = false;
         req.setCharacterEncoding("UTF-8");
@@ -41,17 +41,15 @@ public class Login extends HttpServlet {
 
         if(userName != null && !userName.trim().isEmpty() && password != null && !password.trim().isEmpty()) {
 
-
             for (User user : userList) {
                 if (user.getName().equals(userName)) {
                     if (user.getPassword().equals(password)) {
-                        sessionUser = user;
-                        session.setAttribute("user", sessionUser);
+                        userSession = user;
+                        session.setAttribute("user", userSession);
                         login = true;
                     }
                 }
             }
-
         }
         if(login) {
             String path = req.getContextPath() + "/allTask";
