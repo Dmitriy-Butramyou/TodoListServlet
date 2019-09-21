@@ -23,18 +23,20 @@
         <label class="col-sm-2 col-form-label"> User Name: </label>
         <div class="col-sm-4">
             <input type="text" name="userName"
-                   class="form-control"
+                   class="myForm"
                    placeholder="User name"/>
+        </div>
     </div>
-    </div>
+
     <div class="form-group row">
         <label class="col-sm-2 col-form-label"> Password: </label>
         <div class="col-sm-4">
             <input type="password" name="password"
-                   class="form-control"
+                    class="myForm"
                    placeholder="Password"/>
+        </div>
     </div>
-    </div>
+
    <a href="/addUser" class="btn btn-warning">Add new user</a>
 <button class="btn btn-primary" type="submit">Sing In</button>
 </form>

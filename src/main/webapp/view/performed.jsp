@@ -11,7 +11,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:include page="parts/navbar.jsp"></jsp:include>
 
-<div class="list-group col-md-5 mx-auto mt-4">
+<div class="list-group col-md-5 mx-auto">
 
 <h4>That performed tasks. You COOL!!! :)</h4>
 

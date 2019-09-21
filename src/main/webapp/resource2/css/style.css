@@ -1,3 +1,21 @@
-h4 {
-    color: red;
+
+.myForm {
+    background: rgba(0, 0, 0, 0.1);
+    width: 100%;
+    font-size: 1em;
+    color: white;
+    border: 2px solid white;
+    border-radius: 4px;
+
+}
+
+.myBackground {
+    min-height: 1080px;
+    background-attachment: fixed;
+    background-image: url("/resource2/img/background/1.jpg");
+    background-size: cover; /* Масштабируем фон */
+}
+
+::placeholder {
+    color: #f4d4d8;
 }

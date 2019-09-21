@@ -7,8 +7,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:include page="parts/navbar.jsp"></jsp:include>
-<div class="list-group col-md-5 mx-auto mt-3">
-    <a class="badge badge-pill badge-light" data-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false" aria-controls="collapseExample1">
+<div class="list-group col-md-5 mx-auto">
+    <a class="btn btn-outline-light" data-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false" aria-controls="collapseExample1">
        <h5>${name}</h5>
     </a>
     <div class="collapse" id="collapseExample1">

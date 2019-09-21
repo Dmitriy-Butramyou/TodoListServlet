@@ -4,7 +4,7 @@
 
 <jsp:include page="parts/navbar.jsp"></jsp:include>
 
-<div class="list-group col-md-5 mx-auto mt-4">
+<div class="list-group col-md-5 mx-auto">
     <h4>${location}</h4>
     <form method="get">
         <div class="btn-group mb-3" role="group" aria-label="Basic example">
