@@ -12,24 +12,24 @@
        <h5>${name}</h5>
     </a>
     <div class="collapse" id="collapseExample1">
-        <div class="card card-body">
+        <div class="form-background card-body">
             <div>
                 <form method="post">
                     <div class="form-group row">
-                        <label class=" col-form-label">Username:</label>
+                        <label class="test-decor col-form-label">Username:</label>
                         <div class="ml-3">
-                            <input type="text" name="username"  class="form-control" value="${name}">
+                            <input type="text" name="username"  class="myForm" value="${name}">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class=" col-form-label">Password:</label>
+                        <label class="test-decor col-form-label">Password:</label>
                         <div class="ml-3">
-                            <input type="password" name="password" class="form-control" placeholder="Change Password"/>
+                            <input type="password" name="password" class="myForm" placeholder="Change Password"/>
                         </div>
                     </div>
                     <div class="d-flex bd-highlight mb-3">
-                    <button class="btn btn-primary" type="submit">Save</button>
-                            <button class="btn btn-outline-danger my-2 my-sm-0 ml-3" type="button" onclick="isSure()">
+                    <button class="btn btn-primary" type="submit">Update</button>
+                            <button class="btn btn-danger my-sm-0 ml-3" type="button" onclick="isSure()">
                                 Delete User
                             </button>
                     </div>

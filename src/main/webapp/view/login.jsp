@@ -10,7 +10,7 @@
 <jsp:include page="parts/navbarWithoutLinks.jsp"></jsp:include>
 
 <div class="col-sm-10 mx-auto">
-    <h4>Login page</h4>
+    <h4 class="test-decor">Login page</h4>
 
 <c:if test="${not empty error}">
     <div class="alert alert-danger" role="alert">
@@ -20,7 +20,7 @@
 
 <form  method="post">
     <div class="form-group row">
-        <label class="col-sm-2 col-form-label"> User Name: </label>
+        <label class="test-decor col-sm-2 col-form-label"> User Name: </label>
         <div class="col-sm-4">
             <input type="text" name="userName"
                    class="myForm"
@@ -29,7 +29,7 @@
     </div>
 
     <div class="form-group row">
-        <label class="col-sm-2 col-form-label"> Password: </label>
+        <label class="test-decor col-sm-2 col-form-label"> Password: </label>
         <div class="col-sm-4">
             <input type="password" name="password"
                     class="myForm"

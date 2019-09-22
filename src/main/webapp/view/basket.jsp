@@ -13,7 +13,7 @@
 
 <div class="list-group col-md-5 mx-auto">
 
-<h4>That deleted tasks.</h4>
+<h4 class="test-decor">That deleted tasks.</h4>
 
     <a href="${pageContext.request.contextPath}/button?command=DELETE_ALL">
         <button type="button" class="btn btn-outline-danger btn-lg btn-block mb-2">Delete all from Basket</button>

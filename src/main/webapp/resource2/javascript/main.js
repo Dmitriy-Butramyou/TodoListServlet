@@ -11,7 +11,7 @@ function isSure() {
 function changeBackground() {
     let myBackground = document.getElementsByClassName('myBackground')[0];
     console.log(myBackground);
-    myBackground.style.backgroundImage = "url('/resource2/img/background/" + getRandomInt(1, 6) + ".jpg')";
+    myBackground.style.backgroundImage = "url('/resource2/img/background/" + getRandomInt(1, 7) + ".jpg')";
 }
 
 function getRandomInt(min, max) {

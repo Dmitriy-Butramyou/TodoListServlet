@@ -13,7 +13,7 @@
 
 <div class="list-group col-md-5 mx-auto">
 
-<h4>That performed tasks. You COOL!!! :)</h4>
+<h4 class="test-decor">That performed tasks. You COOL!!! :)</h4>
 
 </div>
 <c:forEach var="task" items="${tasks}">
