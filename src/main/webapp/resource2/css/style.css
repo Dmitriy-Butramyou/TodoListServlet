@@ -15,7 +15,7 @@
 .myBackground {
     min-height: 1080px;
     background-attachment: fixed;
-    background-image: url("/resource2/img/background/3.jpg");
+    background-image: url("/resource2/img/background/6.jpg");
     background-size: cover; /* Масштабируем фон */
 }
 
@@ -45,4 +45,19 @@
     background-color: transparent;
     border: 2px solid rgba(0,123,255,.25);
     border-radius: 4px;
+}
+
+.deadline-position {
+    margin-bottom: 0;
+    text-align: right;
+    float: right;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.description {
+    font-family: monospace;
+    font-size: 1.30em;
 }

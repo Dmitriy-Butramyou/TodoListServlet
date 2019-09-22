@@ -21,7 +21,6 @@
         <div class="card col-md-5 mx-auto">
             <div class="card-header">
                 <div class="btn-group" role="group" aria-label="Basic example">
-                    <h4>${task.name}</h4>
                     <a href="${pageContext.request.contextPath}/button?command=MARK_ACTUAL&id=${task.id}">
                         <button type="button" class="badge badge-pill badge-primary">Actual</button>
                     </a>
@@ -34,10 +33,15 @@
                         </a>
                     </c:if>
                     <c:if test="${empty task.originalFileName}">
-                        <a class="badge badge-pill badge-light" data-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false" aria-controls="collapseExample1">
+                        <a class="badge badge-pill badge-dark" data-toggle="collapse" href="#collapseExample${task.id}" role="button" aria-expanded="false" aria-controls="collapseExample1">
                             Add file
                         </a>
-                        <div class="collapse" id="collapseExample1">
+                    </c:if>
+                </div>
+                <h6 class="deadline-position"><fmt:formatDate type="date" value="${task.eventDate}" /> </h6>
+                <div>
+                    <c:if test="${empty task.originalFileName}">
+                        <div class="collapse" id="collapseExample${task.id}">
                             <div class="card card-body">
                                 <div>
                                     <input type="hidden" name="taskId" value="${task.id}">
@@ -47,22 +51,23 @@
                             </div>
                         </div>
                     </c:if>
-
                 </div>
             </div>
             <div class="card-body">
-                <h6 class="card-title">Deadline: <fmt:formatDate type="date" value="${task.eventDate}" /> </h6>
-
-                <p class="card-text">${task.description}</p>
+                <h4 class="text-center">${task.name}</h4>
+                <p class="description text-center">${task.description}</p>
                 <c:if test="${not empty task.originalFileName}">
                     <a href="${pageContext.request.contextPath}/button?command=DOWNLOAD_FILE&id=${task.id}">
                             ${task.originalFileName}</a>
                 </c:if>
                 <c:if test="${empty task.originalFileName}">
-                    <h6>File empty</h6>
+                    <a data-toggle="collapse" href="#collapseExample${task.id}" role="button" aria-expanded="false" aria-controls="collapseExample1">
+                        The file is missing. Download?
+                    </a>
                 </c:if>
             </div>
         </div>
     </form>
 </c:forEach>
+
 <jsp:include page="parts/footer.jsp"></jsp:include>

@@ -3,7 +3,9 @@ package util;
 import model.Task;
 
 import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 import javax.servlet.http.Part;
@@ -14,7 +16,7 @@ import java.util.UUID;
 
 public class FileUtils {
 
-    public final static String UPLOAD_PATH = "D:/Program/MyStudy/TodoListServlet/src/upload";
+    private final static String UPLOAD_PATH = "D:/Program/MyStudy/TodoListServlet/src/upload";
 //    public final static String UPLOAD_PATH = "C:/TodoListServlet/upload";
 
     private static String getLetter() {
@@ -101,4 +103,5 @@ public class FileUtils {
         inputStream.close();
         outStream.close();
     }
+
 }
