@@ -16,8 +16,8 @@ import java.util.UUID;
 
 public class FileUtils {
 
-    private final static String UPLOAD_PATH = "D:/Program/MyStudy/TodoListServlet/src/upload";
-//    public final static String UPLOAD_PATH = "C:/TodoListServlet/upload";
+//    private final static String UPLOAD_PATH = "D:/Program/MyStudy/TodoListServlet/src/upload";
+    private final static String UPLOAD_PATH = "C:/TodoListServlet/upload";
 
     private static String getLetter() {
         return String.valueOf((char) (new Random().nextInt((122 - 97) + 1) + 97));
